@@ -5,6 +5,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule } from '@angular/material';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -12,7 +15,14 @@ import { LoginComponent } from './login/login.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MdButtonModule,
+    MdMenuModule,
+    MdCardModule,
+    MdToolbarModule,
+    MdIconModule,
+    MdInputModule 
   ],
   providers: [],
   bootstrap: [AppComponent]
