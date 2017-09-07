@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserService, AuthorisationData } from '../shared/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -7,8 +8,16 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
+  authorisationData: AuthorisationData = { email: '', password: '' }
   notification = { error: ''};
 
-  constructor() {}
+  constructor(private router: Router, private userService: UserService) {}
 
+  login() {
+    this.notification.error = ''; 
+    this.userService.login(this.authorisationData).subscribe(
+      data => { this.router.navigateByUrl('/messages'); },
+      error => { this.notification.error = error; }
+    );
+  }
 }

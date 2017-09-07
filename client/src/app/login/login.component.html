@@ -1,13 +1,13 @@
 <h1 class="mat-display-1">Login</h1>
-<form>
+<form (ngSubmit)="login()">
     <div layout-gt-xs="row">
         <md-form-field>
-            <input mdInput type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus="autofocus" required>
+            <input [(ngModel)]=authorisationData.email mdInput type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus="autofocus" required>
         </md-form-field>
     </div>
     <div layout-gt-xs="row">
         <md-form-field>
-            <input mdInput type="password" placeholder="Password" class="form-control" id="password" name="password" required>
+            <input [(ngModel)]=authorisationData.password mdInput type="password" placeholder="Password" class="form-control" id="password" name="password" required>
         </md-form-field>
     </div>
     <p></p>
