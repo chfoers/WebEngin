@@ -5,7 +5,7 @@ import { User, UserInterface } from '../models/user';
 const router = Router();
 
 //Login
-router.post('/sign_in', (request: Request, response: Response) => {
+router.post('/login', (request: Request, response: Response) => {
 const authorisationData = { email: request.body.email, password: request.body.password };
 const errors = [];
 
@@ -16,7 +16,7 @@ const errors = [];
 		authenticated: true
 	});
 	} else {
-	response.render('users/sign_in', { errors: ['Invalid email or password'] });
+	response.render('users/login', { errors: ['Invalid email or password'] });
 	}
 
 	User.findOne({email: authorisationData.email})

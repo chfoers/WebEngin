@@ -16,7 +16,7 @@ export class LoginComponent {
   login() {
     this.notification.error = ''; 
     this.userService.login(this.authorisationData).subscribe(
-      data => { this.router.navigateByUrl('/messages'); },
+      data => { this.router.navigateByUrl('/registration'); },
       error => { this.notification.error = error; }
     );
   }

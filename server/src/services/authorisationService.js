@@ -11,7 +11,7 @@ exports.authorisationService = {
             next();
         });
     },
-    authenticationMiddleware: (request, response, next) => {
+    authentificationMiddleware: (request, response, next) => {
         if (!request.jwtClaimSet) {
             response.status(401).json({ message: 'You need to login.' });
         }

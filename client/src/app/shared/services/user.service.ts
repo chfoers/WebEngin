@@ -12,7 +12,7 @@ export { User } from '../models/user.model';
 
 @Injectable()
 export class UserService {
-    private baseURL = 'http://' + window.location.hostname + ':8080/api';
+    private baseURL = 'http://' + window.location.hostname + ':8080';
     authenticated = false; 
     private options: RequestOptions;
   

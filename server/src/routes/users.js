@@ -5,7 +5,7 @@ const authorisationService_1 = require("../services/authorisationService");
 const user_1 = require("../models/user");
 const router = express_1.Router();
 //Login
-router.post('/sign_in', (request, response) => {
+router.post('/login', (request, response) => {
     const authorisationData = { email: request.body.email, password: request.body.password };
     const errors = [];
     if (authorisationData.email === 'user1@example.org' &&
@@ -16,7 +16,7 @@ router.post('/sign_in', (request, response) => {
         });
     }
     else {
-        response.render('users/sign_in', { errors: ['Invalid email or password'] });
+        response.render('users/login', { errors: ['Invalid email or password'] });
     }
     user_1.User.findOne({ email: authorisationData.email })
         .select('userId name email password')
