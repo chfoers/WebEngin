@@ -35,6 +35,12 @@ export class UserService {
       .catch(this.handleError);
   }
 
+  registration(user: User) {
+    return this.http.post(this.baseURL + '/users/registration', user, this.options)
+    .map((r: Response) => { this.authenticated = false; })
+    .catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error.json().message)
   }

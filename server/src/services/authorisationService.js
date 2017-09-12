@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const config_1 = require("../config");
-exports.authorisationService = {
+exports.AuthorisationService = {
     jwtValidationMiddleware: (request, response, next) => {
         const token = request.cookies[config_1.default.authentification.cookieName] || '';
         jwt.verify(token, config_1.default.authentification.secret, (err, claimSet) => {

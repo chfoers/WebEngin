@@ -6,7 +6,7 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import usersRoute from './routes/users';
 import config from './config';
-import { authorisationService } from './services/authorisationService';
+import {AuthorisationService } from './services/authorisationService';
 
 function startServer() {
 const app = express();
@@ -14,7 +14,7 @@ const app = express();
 app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
 app.use(cookieParser());
 app.use(bodyParser.json());
-app.use(authorisationService.jwtValidationMiddleware);
+app.use(AuthorisationService.jwtValidationMiddleware);
 app.use('/users', usersRoute);
 
 app.listen(8080, () => {

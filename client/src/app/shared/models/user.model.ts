@@ -2,6 +2,6 @@ export interface User {
   name: string,
   email: string,
   password: string,
-  passwordConfirm?: string,
+  password2?: string,
   oldPassword?: string,
 }

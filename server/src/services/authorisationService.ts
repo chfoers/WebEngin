@@ -14,7 +14,7 @@ export interface JwtClaimSetHolder {
 	jwtClaimSet?: JwtClaimSet
 }
 
-export const authorisationService = {
+export const AuthorisationService = {
 	
 	jwtValidationMiddleware: (request: Request & JwtClaimSetHolder, 
 		response: Response, next: NextFunction) => {

@@ -13,7 +13,7 @@ function startServer() {
     app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
     app.use(cookieParser());
     app.use(bodyParser.json());
-    app.use(authorisationService_1.authorisationService.jwtValidationMiddleware);
+    app.use(authorisationService_1.AuthorisationService.jwtValidationMiddleware);
     app.use('/users', users_1.default);
     app.listen(8080, () => {
         console.log('listening on port 8080!');
