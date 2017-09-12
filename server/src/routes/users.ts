@@ -9,15 +9,6 @@ router.post('/login', (request: Request, response: Response) => {
 const authorisationData = { email: request.body.email, password: request.body.password };
 const errors = [];
 
-	if (authorisationData.email === 'user1@example.org' &&
-	authorisationData.password === 'user1') {
-		response.render('index', {
-		info: 'Logged in successfully',
-		authenticated: true
-	});
-	} else {
-	response.render('users/login', { errors: ['Invalid email or password'] });
-	}
 
 	User.findOne({email: authorisationData.email})
 	.select('userId name email password')

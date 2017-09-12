@@ -3,7 +3,6 @@ import { Document } from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import * as faker from 'faker';
 import { User, UserInterface } from '../src/models/user';
-//import { Contact, IContact } from '../src/models/contact';
 import config from '../src/config';
 
 (mongoose as any).Promise = global.Promise;

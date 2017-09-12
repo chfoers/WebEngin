@@ -8,16 +8,6 @@ const router = express_1.Router();
 router.post('/login', (request, response) => {
     const authorisationData = { email: request.body.email, password: request.body.password };
     const errors = [];
-    if (authorisationData.email === 'user1@example.org' &&
-        authorisationData.password === 'user1') {
-        response.render('index', {
-            info: 'Logged in successfully',
-            authenticated: true
-        });
-    }
-    else {
-        response.render('users/login', { errors: ['Invalid email or password'] });
-    }
     user_1.User.findOne({ email: authorisationData.email })
         .select('userId name email password')
         .exec()

@@ -22,4 +22,12 @@ app.listen(8080, () => {
 	});
 };
 
-startServer();
+(mongoose as any).Promise = global.Promise;
+mongoose.connect(config.db.uri)
+    .then(() => {
+        startServer();
+    })
+    .catch(err => {
+        console.error('App starting error:', err.stack);
+        process.exit(1);
+    });
