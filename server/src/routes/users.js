@@ -32,4 +32,9 @@ router.post('/login', (request, response) => {
         response.status(400).json({ message: reason });
     });
 });
+//Logout
+router.delete('/logout', (request, response) => {
+    authorisationService_1.authorisationService.removeToken(response);
+    response.sendStatus(200);
+});
 exports.default = router;

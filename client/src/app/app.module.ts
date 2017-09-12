@@ -12,12 +12,14 @@ import { UserService } from './shared/services/user.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule } from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,

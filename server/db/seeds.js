@@ -4,7 +4,6 @@ const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const faker = require("faker");
 const user_1 = require("../src/models/user");
-//import { Contact, IContact } from '../src/models/contact';
 const config_1 = require("../src/config");
 mongoose.Promise = global.Promise;
 mongoose.connect(config_1.default.db.uri)

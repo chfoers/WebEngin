@@ -25,6 +25,12 @@ export class UserService {
 
   login(authorisationData: AuthorisationData) {
     return this.http.post(this.baseURL + '/users/login', authorisationData, this.options)
+      .map((r: Response) => { this.authenticated = true; })
+      .catch(this.handleError);
+  }
+
+  logout() {
+    return this.http.delete(this.baseURL + '/users/logout', this.options)
       .map((r: Response) => { this.authenticated = false; })
       .catch(this.handleError);
   }

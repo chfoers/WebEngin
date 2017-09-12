@@ -32,4 +32,10 @@ const errors = [];
             response.status(400).json({message: reason});
         });
 });
+
+//Logout
+router.delete('/logout', (request: Request, response: Response) => {
+    authorisationService.removeToken(response);
+    response.sendStatus(200);
+});
 export default router;
