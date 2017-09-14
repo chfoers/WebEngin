@@ -9,17 +9,20 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
 import { UserService } from './shared/services/user.service';
+import { TodoService } from './shared/services/todo.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize } from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
 import { LogoutComponent } from './logout/logout.component';
+import { TodoComponent } from './todo/todo.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    LogoutComponent
+    LogoutComponent,
+    TodoComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +37,7 @@ import { LogoutComponent } from './logout/logout.component';
     FormsModule,
     HttpModule
   ],
-  providers: [UserService],
+  providers: [UserService, TodoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
