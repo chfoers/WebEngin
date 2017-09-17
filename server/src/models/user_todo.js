@@ -6,4 +6,4 @@ exports.User_TodoSchema = new mongoose.Schema({
     userId: { type: String, required: true },
     todoId: { type: String, required: true },
 });
-exports.User_Todo = mongoose.model('Todo', exports.User_TodoSchema);
+exports.User_Todo = mongoose.model('User_Todo', exports.User_TodoSchema);

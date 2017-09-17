@@ -6,6 +6,7 @@ const cors = require("cors");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const users_1 = require("./routes/users");
+const todos_1 = require("./routes/todos");
 const config_1 = require("./config");
 const authorisationService_1 = require("./services/authorisationService");
 function startServer() {
@@ -15,6 +16,7 @@ function startServer() {
     app.use(bodyParser.json());
     app.use(authorisationService_1.AuthorisationService.jwtValidationMiddleware);
     app.use('/users', users_1.default);
+    app.use('/todos', todos_1.default);
     app.listen(8080, () => {
         console.log('listening on port 8080!');
     });

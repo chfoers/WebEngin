@@ -12,4 +12,4 @@ export const User_TodoSchema = new mongoose.Schema({
     todoId: { type: String, required: true },
 });
 
-export const User_Todo = mongoose.model<User_TodoInterface>('Todo', User_TodoSchema);
+export const User_Todo = mongoose.model<User_TodoInterface>('User_Todo', User_TodoSchema);

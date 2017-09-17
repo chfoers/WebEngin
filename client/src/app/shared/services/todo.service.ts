@@ -22,7 +22,7 @@ constructor(private http: Http) {
 }
 
 addTodo(todo: Todo) {
-  return this.http.post(this.baseURL + '/users/todo', todo, this.options)
+  return this.http.post(this.baseURL + '/todos/todo', todo, this.options)
   .map((r: Response) => { this.authenticated = false; })
   .catch(this.handleError);
 }

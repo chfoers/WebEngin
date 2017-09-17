@@ -12,32 +12,36 @@ const router = Router();
 router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const todoData = request.body;
     const errors = [];
-    var currentUserId: string;
-    currentUserId = "-1";
+    var currentEmail: string;
+    currentEmail = '';
 
     if (request.jwtClaimSet != null){
-        currentUserId = request.jwtClaimSet.userId;
+        currentEmail = request.jwtClaimSet.email;
     }
 
-    User.findOne({ currentUserId }).exec().then((user: UserInterface) => {
+    User.findOne({ email: currentEmail }).exec().then((user: UserInterface) => {
         if (!user) {
             return Promise.reject('No user found.');
         } else {
-            const todo = new Todo(todoData);
+            const todo = new Todo({
+                todoTitle: todoData.title,
+                todoText: todoData.text
+            });
             const user_todoObject = new User_Todo({
-                userId: currentUserId,
+                userId: user.userId,
                 todoId: todo.todoId
             });
             const user_todo = new User_Todo(user_todoObject);
             user_todo.save().catch((reason: string) => {
                 response.status(400).json({message: reason});
-            }); //Wir haben es versucht
+            }); 
             return todo.save();
         }
     }).
     then(() => {
         response.sendStatus(201);
-    }).catch((reason: string) => {
+    })
+    .catch((reason: string) => {
         response.status(400).json({message: reason});
     });
 });
