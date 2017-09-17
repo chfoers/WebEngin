@@ -23,7 +23,13 @@ constructor(private http: Http) {
 
 addTodo(todo: Todo) {
   return this.http.post(this.baseURL + '/todos/todo', todo, this.options)
-  .map((r: Response) => { this.authenticated = false; })
+  .map((response: Response) => { this.authenticated = false; })
+  .catch(this.handleError);
+}
+
+getTodos(): Observable<Todo[]> {
+  return this.http.get(this.baseURL + '/todos/index/todo', this.options)
+    .map((response: Response) => response.json().data )
   .catch(this.handleError);
 }
 

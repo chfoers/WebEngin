@@ -4,11 +4,12 @@ import ValidationService from '../services/validationService';
 import { Todo, TodoInterface } from '../models/todo';
 import { User, UserInterface } from '../models/user';
 import { User_Todo, User_TodoInterface, User_TodoSchema } from '../models/user_todo';
+import { TodoService } from '../services/todoService'
 //Validationservice
 
 const router = Router();
 
-// Sign Up
+// Aufgabe anlegen
 router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const todoData = request.body;
     const errors = [];
@@ -37,12 +38,46 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
             }); 
             return todo.save();
         }
-    }).
-    then(() => {
+    })
+    .then(() => {
         response.sendStatus(201);
     })
     .catch((reason: string) => {
         response.status(400).json({message: reason});
     });
 });
+
+// Alle Aufgaben eines Users anzeigen
+router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const errors = [];
+    var currentId: string;
+    currentId = '';
+
+    if (request.jwtClaimSet != null){
+        currentId = request.jwtClaimSet.userId;
+    }
+
+    User_Todo.find({ userId: currentId }).exec()
+        .then((todos: User_TodoInterface[]) => {
+         return new Promise<TodoInterface[]>((resolve, reject) => {
+            var todosList: TodoInterface[] = [];
+            for (var i = 0; i < todos.length; i++) {
+                TodoService.getTodoById(todos[i].todoId).then((todo: TodoInterface) => {
+                    todosList[i] = todo;
+                }).catch((reason: string) => {
+                    
+                });       
+            }
+            resolve(todosList);
+            })
+        })
+        .then((todosList: TodoInterface[]) => {
+            console.log('TodoListe: ' + todosList);
+            response.json({ data: todosList });
+        })
+        .catch((reason: string) => {
+            response.status(400).json({message: reason});
+        });
+});
+
 export default router;

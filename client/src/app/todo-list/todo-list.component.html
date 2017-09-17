@@ -1,0 +1,10 @@
+<h1>Todos</h1>
+<div class="panel panel-primary">
+  <div class="panel-body todos">
+    <div *ngFor="let todo of todos">
+      <div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>
+        <div class="todo-title">{{todo.title}}</div>
+        <div class="todo-text">{{todo.text}}</div>
+    </div> 
+  </div>
+</div>
