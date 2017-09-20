@@ -16,7 +16,7 @@ export class LoginComponent {
   login() {
     this.notification.error = ''; 
     this.userService.login(this.authorisationData).subscribe(
-      data => { this.router.navigateByUrl('/logout'); },
+      data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
     );
   }

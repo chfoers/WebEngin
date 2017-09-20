@@ -51,25 +51,28 @@ router.get('/index/todo', (request, response) => {
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
     }
+    var todosList = [];
+    var promiseList = [];
     user_todo_1.User_Todo.find({ userId: currentId }).exec()
         .then((todos) => {
-        return new Promise((resolve, reject) => {
-            var todosList = [];
-            for (var i = 0; i < todos.length; i++) {
+        for (var i = 0; i < todos.length; i++) {
+            promiseList.push(new Promise((resolve, reject) => {
                 todoService_1.TodoService.getTodoById(todos[i].todoId).then((todo) => {
                     todosList[i] = todo;
-                }).catch((reason) => {
+                    response.json({ data: [todo] });
+                    resolve;
+                }).catch(() => {
+                    resolve;
                 });
-            }
-            // resolve(todosList);
-        });
-    })
-        .then((todosList) => {
-        console.log('TodoListe: ' + todosList);
+            }));
+        }
+    }).then(function () {
+        return Promise.all(promiseList);
+    }).then(function () {
+        console.log(todosList);
         response.json({ data: todosList });
-    })
-        .catch((reason) => {
-        response.status(400).json({ message: reason });
+    }).catch((reason) => {
+        response.status(401).json({ message: reason });
     });
 });
 exports.default = router;

@@ -56,28 +56,28 @@ router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Respo
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
     }
-
+    var todosList: TodoInterface[] = [];
+    var promiseList: Promise<TodoInterface>[] = [];
     User_Todo.find({ userId: currentId }).exec()
-        .then((todos: User_TodoInterface[]) => {
-         return new Promise<TodoInterface[]>((resolve, reject) => {
-            var todosList: TodoInterface[] = [];
+    .then((todos: User_TodoInterface[]) => { 
             for (var i = 0; i < todos.length; i++) {
-                TodoService.getTodoById(todos[i].todoId).then((todo: TodoInterface) => {
-                    todosList[i] = todo;
-                }).catch((reason: string) => {
-                    
-                });       
-            }
-            resolve(todosList);
-            })
-        })
-        .then((todosList: TodoInterface[]) => {
-            console.log('TodoListe: ' + todosList);
-            response.json({ data: todosList });
-        })
-        .catch((reason: string) => {
-            response.status(400).json({message: reason});
-        });
+                promiseList.push(new Promise<TodoInterface>((resolve, reject) => {
+                        TodoService.getTodoById(todos[i].todoId).then((todo: TodoInterface) => {
+                        todosList[i] = todo;
+                        resolve; 
+                    }).catch(() => {
+                        resolve;
+                    })
+                }));
+            }  
+    }).then(function () {
+        return Promise.all(promiseList);
+    }).then(function () {
+        console.log(todosList)
+        response.json({ data: todosList});
+    }).catch((reason: string) => {
+        response.status(401).json({message: reason});
+    });      
 });
 
 export default router;
