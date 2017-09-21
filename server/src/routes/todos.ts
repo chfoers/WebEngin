@@ -3,7 +3,7 @@ import { AuthorisationService, JwtClaimSetHolder } from '../services/authorisati
 import ValidationService from '../services/validationService';
 import { Todo, TodoInterface } from '../models/todo';
 import { User, UserInterface } from '../models/user';
-import { User_Todo, User_TodoInterface, User_TodoSchema } from '../models/user_todo';
+import { User_Todo, User_TodoInterface } from '../models/user_todo';
 import { TodoService } from '../services/todoService'
 //Validationservice
 
@@ -48,7 +48,7 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
 });
 
 // Alle Aufgaben eines Users anzeigen
-router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
+router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => { //User flexibel einbauen + Fehlerbehebung zu viele Results + Anzeige Text Frontend
     const errors = [];
     var currentId: string;
     currentId = '';
@@ -56,28 +56,46 @@ router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Respo
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
     }
-    var todosList: TodoInterface[] = [];
-    var promiseList: Promise<TodoInterface>[] = [];
-    User_Todo.find({ userId: currentId }).exec()
-    .then((todos: User_TodoInterface[]) => { 
-            for (var i = 0; i < todos.length; i++) {
-                promiseList.push(new Promise<TodoInterface>((resolve, reject) => {
-                        TodoService.getTodoById(todos[i].todoId).then((todo: TodoInterface) => {
-                        todosList[i] = todo;
-                        resolve; 
-                    }).catch(() => {
-                        resolve;
-                    })
-                }));
-            }  
-    }).then(function () {
-        return Promise.all(promiseList);
-    }).then(function () {
-        console.log(todosList)
-        response.json({ data: todosList});
-    }).catch((reason: string) => {
-        response.status(401).json({message: reason});
-    });      
+    interface QueryResultType {
+        _id: string;
+        todoId: string;
+        userId: string;
+        __v: string;
+        oneTodo: [{
+            _id: string;
+            todoTitle: string;
+            todoData: string;
+            todoId: string;
+            __v: string;
+        }]
+    }
+    User_Todo.aggregate([
+        {$unwind: "$todoId"}, 
+        {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
+        {$match: {"userId" : "1976eebb-6f10-421a-8b6a-02f24ddd93ec"}}
+    ])
+    .exec().then((todos:  QueryResultType[]) => {
+                    console.log(todos);
+                    const foundTodos = todos.map(todo => {                   
+                        if (todo.oneTodo[0] != null){
+                            return {
+                                //todoId: todo.todoId,
+                                title: todo.oneTodo[0].todoTitle,
+                                text: todo.oneTodo[0].todoData
+                            };
+                        }
+                        return {
+                            title: "{}",
+                            text: "{}"
+                        }
+                    }); 
+                    //console.log(foundTodos);  
+                    response.status(200).json({ data: foundTodos }); 
+                }).catch((reason: string) => {
+                    response.status(400).json({ message: reason });
+                }); 
 });
+//db.user_todos.aggregate([{$lookup: {from: "todo", localField: "todoId", foreignField: "todoId", as: "a"}}, {$match: {"userId" : "1976eebb-6f10-421a-8b6a-02f24ddd93ec"}}])
+
 
 export default router;
