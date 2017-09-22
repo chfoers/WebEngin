@@ -5,8 +5,10 @@ import 'rxjs/add/operator/catch';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Todo } from '../models/todo.model';
+import { TodoDb } from '../models/todoDb.model';
 
 export { Todo } from '../models/todo.model';
+export { TodoDb } from '../models/todoDb.model';
 
 @Injectable()
 export class TodoService {
@@ -27,7 +29,7 @@ addTodo(todo: Todo) {
   .catch(this.handleError);
 }
 
-getTodos(): Observable<Todo[]> {
+getTodos(): Observable<TodoDb[]> {
   return this.http.get(this.baseURL + '/todos/index/todo', this.options)
     .map((response: Response) => response.json().data )
   .catch(this.handleError);

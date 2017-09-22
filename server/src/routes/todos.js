@@ -57,7 +57,7 @@ router.get('/index/todo', (request, response) => {
         .exec().then((todos) => {
         const foundTodos = todos.map(todo => {
             return {
-                todoId: todo.oneTodo[0].todoId,
+                id: todo.oneTodo[0].todoId,
                 title: todo.oneTodo[0].todoTitle,
                 text: todo.oneTodo[0].todoText
             };

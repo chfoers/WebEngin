@@ -68,9 +68,9 @@ router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Respo
         {$match: {"userId" : currentId}}
     ])
     .exec().then((todos:  QueryResultType[]) => {
-                    const foundTodos = todos.map(todo => {                  
+                    const foundTodos = todos.map(todo => {                 
                         return {                         
-                            todoId: todo.oneTodo[0].todoId,
+                            id: todo.oneTodo[0].todoId,
                             title: todo.oneTodo[0].todoTitle,
                             text: todo.oneTodo[0].todoText
                         };
