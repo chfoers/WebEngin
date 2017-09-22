@@ -68,16 +68,17 @@ router.get('/index/todo', (request, response) => {
     });
 });
 // Eine Aufgabe eines Users anzeigen
-router.get('/index/todo', (request, response) => {
+router.get('/todo/:todoId', (request, response) => {
     const errors = [];
     var currentId = '';
+    var currentTodoId = request.params['todoId'];
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
     }
     user_todo_1.User_Todo.aggregate([
         { $unwind: "$todoId" },
         { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
-        { $match: { "userId": currentId, "todoId": request.body } }
+        { $match: { "userId": currentId, "todoId": currentTodoId } }
     ])
         .exec().then((todos) => {
         const foundTodos = todos.map(todo => {

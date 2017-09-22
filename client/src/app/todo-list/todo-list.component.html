@@ -3,7 +3,7 @@
   <div class="panel-body todos">
     <div *ngFor="let todo of todos">
       <div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>
-      <a class="message-received" [routerLink]="['/todo', todo.id]">
+      <a class="message-received" [routerLink]="['/todo/todoId', todo.id]">
         <div class="todo-id">{{todo.id}}</div>
         <div class="todo-title">{{todo.title}}</div>
         <div class="todo-text">{{todo.text}}</div>

@@ -35,6 +35,12 @@ getTodos(): Observable<TodoDb[]> {
   .catch(this.handleError);
 }
 
+getTodo(todoId: string): Observable<TodoDb> {
+  return this.http.get(this.baseURL + '/todos/todo/' + todoId, this.options)
+    .map((response: Response) => response.json().data )
+  .catch(this.handleError);
+}
+
 private handleError(error: Response | any) {
   return Observable.throw(error.json().message)
 }
