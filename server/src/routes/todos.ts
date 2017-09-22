@@ -9,16 +9,10 @@ import { User_Todo, User_TodoInterface } from '../models/user_todo';
 const router = Router();
 
 interface QueryResultType {
-    _id: string;
-    todoId: string;
-    userId: string;
-    __v: string;
     oneTodo: [{
-        _id: string;
         todoTitle: string;
         todoText: string;
         todoId: string;
-        __v: string;
     }]
 }
 
@@ -74,10 +68,9 @@ router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Respo
         {$match: {"userId" : currentId}}
     ])
     .exec().then((todos:  QueryResultType[]) => {
-                    const foundTodos = todos.map(todo => { 
-                        console.log(todo.oneTodo[0]);                  
+                    const foundTodos = todos.map(todo => {                  
                         return {                         
-                            todoId: todo.todoId,
+                            todoId: todo.oneTodo[0].todoId,
                             title: todo.oneTodo[0].todoTitle,
                             text: todo.oneTodo[0].todoText
                         };
@@ -104,7 +97,7 @@ router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Respo
     .exec().then((todos:  QueryResultType[]) => {
                     const foundTodos = todos.map(todo => {                   
                         return {
-                            todoId: todo.todoId,
+                            todoId: todo.oneTodo[0].todoId,
                             title: todo.oneTodo[0].todoTitle,
                             text: todo.oneTodo[0].todoText
                         };

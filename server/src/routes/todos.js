@@ -56,9 +56,8 @@ router.get('/index/todo', (request, response) => {
     ])
         .exec().then((todos) => {
         const foundTodos = todos.map(todo => {
-            console.log(todo.oneTodo[0]);
             return {
-                todoId: todo.todoId,
+                todoId: todo.oneTodo[0].todoId,
                 title: todo.oneTodo[0].todoTitle,
                 text: todo.oneTodo[0].todoText
             };
@@ -83,7 +82,7 @@ router.get('/index/todo', (request, response) => {
         .exec().then((todos) => {
         const foundTodos = todos.map(todo => {
             return {
-                todoId: todo.todoId,
+                todoId: todo.oneTodo[0].todoId,
                 title: todo.oneTodo[0].todoTitle,
                 text: todo.oneTodo[0].todoText
             };
