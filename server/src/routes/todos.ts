@@ -4,10 +4,23 @@ import ValidationService from '../services/validationService';
 import { Todo, TodoInterface } from '../models/todo';
 import { User, UserInterface } from '../models/user';
 import { User_Todo, User_TodoInterface } from '../models/user_todo';
-import { TodoService } from '../services/todoService'
 //Validationservice
 
 const router = Router();
+
+interface QueryResultType {
+    _id: string;
+    todoId: string;
+    userId: string;
+    __v: string;
+    oneTodo: [{
+        _id: string;
+        todoTitle: string;
+        todoText: string;
+        todoId: string;
+        __v: string;
+    }]
+}
 
 // Aufgabe anlegen
 router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
@@ -48,54 +61,58 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
 });
 
 // Alle Aufgaben eines Users anzeigen
-router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => { //User flexibel einbauen + Fehlerbehebung zu viele Results + Anzeige Text Frontend
+router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];
-    var currentId: string;
-    currentId = '';
+    var currentId: string = '';
 
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
-    }
-    interface QueryResultType {
-        _id: string;
-        todoId: string;
-        userId: string;
-        __v: string;
-        oneTodo: [{
-            _id: string;
-            todoTitle: string;
-            todoData: string;
-            todoId: string;
-            __v: string;
-        }]
-    }
+    }   
     User_Todo.aggregate([
         {$unwind: "$todoId"}, 
         {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
-        {$match: {"userId" : "1976eebb-6f10-421a-8b6a-02f24ddd93ec"}}
+        {$match: {"userId" : currentId}}
     ])
     .exec().then((todos:  QueryResultType[]) => {
-                    console.log(todos);
-                    const foundTodos = todos.map(todo => {                   
-                        if (todo.oneTodo[0] != null){
-                            return {
-                                //todoId: todo.todoId,
-                                title: todo.oneTodo[0].todoTitle,
-                                text: todo.oneTodo[0].todoData
-                            };
-                        }
-                        return {
-                            title: "{}",
-                            text: "{}"
-                        }
-                    }); 
-                    //console.log(foundTodos);  
+                    const foundTodos = todos.map(todo => { 
+                        console.log(todo.oneTodo[0]);                  
+                        return {                         
+                            todoId: todo.todoId,
+                            title: todo.oneTodo[0].todoTitle,
+                            text: todo.oneTodo[0].todoText
+                        };
+                    });
                     response.status(200).json({ data: foundTodos }); 
                 }).catch((reason: string) => {
                     response.status(400).json({ message: reason });
                 }); 
 });
-//db.user_todos.aggregate([{$lookup: {from: "todo", localField: "todoId", foreignField: "todoId", as: "a"}}, {$match: {"userId" : "1976eebb-6f10-421a-8b6a-02f24ddd93ec"}}])
 
+// Eine Aufgabe eines Users anzeigen
+router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const errors = [];
+    var currentId: string = '';
+
+    if (request.jwtClaimSet != null){
+        currentId = request.jwtClaimSet.userId;
+    }   
+    User_Todo.aggregate([
+        {$unwind: "$todoId"}, 
+        {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
+        {$match: {"userId" : currentId, "todoId": request.body}}
+    ])
+    .exec().then((todos:  QueryResultType[]) => {
+                    const foundTodos = todos.map(todo => {                   
+                        return {
+                            todoId: todo.todoId,
+                            title: todo.oneTodo[0].todoTitle,
+                            text: todo.oneTodo[0].todoText
+                        };
+                    }); 
+                    response.status(200).json({ data: foundTodos[0] }); 
+                }).catch((reason: string) => {
+                    response.status(400).json({ message: reason });
+                }); 
+});
 
 export default router;

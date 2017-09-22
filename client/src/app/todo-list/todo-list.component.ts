@@ -10,7 +10,6 @@ import { NgIf, NgFor } from '@angular/common'
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
   notification = { error: '' };
-  test: "hallo";
 
   constructor(public todoService: TodoService) { }
   

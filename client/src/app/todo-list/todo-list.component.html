@@ -3,8 +3,10 @@
   <div class="panel-body todos">
     <div *ngFor="let todo of todos">
       <div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>
+      <a class="message-received">
         <div class="todo-title">{{todo.title}}</div>
         <div class="todo-text">{{todo.text}}</div>
+      </a>
     </div> 
   </div>
 </div>

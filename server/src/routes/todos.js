@@ -45,36 +45,52 @@ router.post('/todo', (request, response) => {
 // Alle Aufgaben eines Users anzeigen
 router.get('/index/todo', (request, response) => {
     const errors = [];
-    var currentId;
-    currentId = '';
+    var currentId = '';
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
     }
     user_todo_1.User_Todo.aggregate([
         { $unwind: "$todoId" },
         { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
-        { $match: { "userId": "1976eebb-6f10-421a-8b6a-02f24ddd93ec" } }
+        { $match: { "userId": currentId } }
     ])
         .exec().then((todos) => {
-        console.log(todos);
         const foundTodos = todos.map(todo => {
-            if (todo.oneTodo[0] != null) {
-                return {
-                    //todoId: todo.todoId,
-                    title: todo.oneTodo[0].todoTitle,
-                    text: todo.oneTodo[0].todoData
-                };
-            }
+            console.log(todo.oneTodo[0]);
             return {
-                title: "{}",
-                text: "{}"
+                todoId: todo.todoId,
+                title: todo.oneTodo[0].todoTitle,
+                text: todo.oneTodo[0].todoText
             };
         });
-        //console.log(foundTodos);  
         response.status(200).json({ data: foundTodos });
     }).catch((reason) => {
         response.status(400).json({ message: reason });
     });
 });
-//db.user_todos.aggregate([{$lookup: {from: "todo", localField: "todoId", foreignField: "todoId", as: "a"}}, {$match: {"userId" : "1976eebb-6f10-421a-8b6a-02f24ddd93ec"}}])
+// Eine Aufgabe eines Users anzeigen
+router.get('/index/todo', (request, response) => {
+    const errors = [];
+    var currentId = '';
+    if (request.jwtClaimSet != null) {
+        currentId = request.jwtClaimSet.userId;
+    }
+    user_todo_1.User_Todo.aggregate([
+        { $unwind: "$todoId" },
+        { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
+        { $match: { "userId": currentId, "todoId": request.body } }
+    ])
+        .exec().then((todos) => {
+        const foundTodos = todos.map(todo => {
+            return {
+                todoId: todo.todoId,
+                title: todo.oneTodo[0].todoTitle,
+                text: todo.oneTodo[0].todoText
+            };
+        });
+        response.status(200).json({ data: foundTodos[0] });
+    }).catch((reason) => {
+        response.status(400).json({ message: reason });
+    });
+});
 exports.default = router;
