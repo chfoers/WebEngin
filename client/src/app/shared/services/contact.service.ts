@@ -18,7 +18,7 @@ export class ContactService {
   }
 
   addContact(email: string) {
-    return this.http.post(this.baseURL + '/contacts', { email }, this.options)
+    return this.http.post(this.baseURL + '/contacts/contact', { email }, this.options)
       .map((r: Response) => { })
       .catch(this.handleError);
   }

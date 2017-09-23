@@ -19,8 +19,7 @@ router.post('/contact', (request, response, next) => {
         else {
             const params = [{ ownerId: userId },
                 { contactId: contactUser.userId }];
-            return contact_1.Contact.findOne().and(params).exec();
-            //return Promise.all([Promise.resolve(contactUser), Contact.findOne().and(params).exec()]);
+            return Promise.all([Promise.resolve(contactUser), contact_1.Contact.findOne().and(params).exec()]);
         }
     }).then(([contactUser, existingContact]) => {
         if (existingContact) {

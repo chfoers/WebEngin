@@ -6,6 +6,7 @@ import * as bodyParser from 'body-parser';
 import * as cookieParser from 'cookie-parser';
 import usersRoute from './routes/users';
 import todosRoute from './routes/todos';
+import contactsRoute from './routes/contacts';
 import config from './config';
 import {AuthorisationService } from './services/authorisationService';
 
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use(AuthorisationService.jwtValidationMiddleware);
 app.use('/users', usersRoute);
 app.use('/todos', todosRoute);
+app.use('/contacts', contactsRoute);
 
 app.listen(8080, () => {
 	console.log('listening on port 8080!');

@@ -7,8 +7,8 @@ export interface ContactInterface extends mongoose.Document{
 }
 
 export const ContactSchema = new mongoose.Schema({
-    ownerId: { type: String, required:true },
-    contactId: { type: String, require: true},
+    ownerId: { type: String, required: true },
+    contactId: { type: String, require: true },
     name: { type: String, required: true }
 });
 

@@ -18,7 +18,7 @@ if (request.jwtClaimSet != null && request.jwtClaimSet.userId != null){
 
 User.findOne({ email : request.body.email })
     .exec()
-    .then<[UserInterface, ContactInterface]>((contactUser: UserInterface ) => {
+    .then((contactUser: UserInterface ) => { //TODO: <[UserInterface, ContactInterface]>
         if (!contactUser) {
             return Promise.reject('User gibts nicht mit dieser Email');
         }
@@ -27,7 +27,7 @@ User.findOne({ email : request.body.email })
                 {contactId: contactUser.userId}];
                 return Promise.all([Promise.resolve(contactUser), Contact.findOne().and(params).exec()]);
                      }
-        }).then<ContactInterface>(([contactUser, existingContact]: [UserInterface,
+        }).then(([contactUser, existingContact]: [UserInterface, //TODO: <ContactInterface>
         ContactInterface]) => {
                                 if (existingContact) {
                                     return Promise.reject('Kontakt existiert schon');
