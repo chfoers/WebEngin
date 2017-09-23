@@ -25,18 +25,38 @@ export class TodoComponent{
 
   loadTodo() {
     this.notification.error = '';
-    this.todoService.getTodo(this.todoId).subscribe(
-      answer => { 
-        this.todo = answer;
-      },
-      error => { this.notification.error = error; }
-    );
+    if(this.todoId != 'newTodo'){
+      this.todoService.getTodo(this.todoId).subscribe(
+        answer => { 
+          this.todo = answer;
+        },
+        error => { this.notification.error = error; }
+      );
+    }
+  }
+
+  removeTodo() {
+    this.notification.error = '';
+      this.todoService.removeTodo(this.todoId).subscribe(
+        data => { },
+        error => { this.notification.error = error; }
+      );
   }
 
   addTodo() {
     this.notification.error = ''; 
     this.todoService.addTodo(this.todo).subscribe(
       data => { },
+      error => { this.notification.error = error; }
+    );
+  }
+
+  updateTodo(){
+    this.notification.error = ''; 
+    this.todoService.updateTodo(this.todoId, this.todo).subscribe(
+      answer => { 
+        this.todo = answer;
+      },
       error => { this.notification.error = error; }
     );
   }

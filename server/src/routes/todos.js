@@ -42,6 +42,24 @@ router.post('/todo', (request, response) => {
         response.status(400).json({ message: reason });
     });
 });
+router.put('/todo/:todoId', (request, response) => {
+    const errors = [];
+    var currentId = '';
+    const todoData = request.body;
+    var currentTodoId = request.params['todoId'];
+    if (request.jwtClaimSet != null) {
+        currentId = request.jwtClaimSet.userId;
+    }
+    todo_1.Todo.update({ "todoId": currentTodoId }, {
+        $set: { "todoTitle": todoData.todoTitle, "todoText": todoData.todoText },
+    })
+        .then(() => {
+        response.sendStatus(201);
+    })
+        .catch((reason) => {
+        response.status(400).json({ message: reason });
+    });
+});
 // Alle Aufgaben eines Users anzeigen
 router.get('/index/todo', (request, response) => {
     const errors = [];
@@ -90,6 +108,32 @@ router.get('/todo/:todoId', (request, response) => {
         });
         response.status(200).json({ data: foundTodos[0] });
     }).catch((reason) => {
+        response.status(400).json({ message: reason });
+    });
+});
+// Eine Aufgabe löschen
+router.delete('/todo/:todoId', (request, response) => {
+    const errors = [];
+    var currentId = '';
+    var currentTodoId = request.params['todoId'];
+    if (request.jwtClaimSet != null) {
+        currentId = request.jwtClaimSet.userId;
+    }
+    user_todo_1.User_Todo.findOne({ userId: currentId, todoId: currentTodoId }).exec().then((user_todo) => {
+        if (!user_todo) {
+            return Promise.reject('No user found.');
+        }
+        else {
+            return user_todo_1.User_Todo.remove({ todoId: currentTodoId }).exec();
+        }
+    })
+        .then(() => {
+        return todo_1.Todo.remove({ todoId: currentTodoId }).exec();
+    })
+        .then(() => {
+        response.status(200).json({});
+    })
+        .catch((reason) => {
         response.status(400).json({ message: reason });
     });
 });

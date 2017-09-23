@@ -54,6 +54,30 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
     });
 });
 
+router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const errors = [];
+    var currentId: string = '';
+    const todoData = request.body;
+    var currentTodoId = request.params['todoId'];
+    
+    if (request.jwtClaimSet != null){
+        currentId = request.jwtClaimSet.userId;
+    }
+    Todo.update(
+        { "todoId" : currentTodoId },
+        {
+          $set: { "todoTitle": todoData.todoTitle, "todoText": todoData.todoText },
+        }
+    )
+    .then(() => {
+        response.sendStatus(201);
+    })
+    .catch((reason: string) => {
+        response.status(400).json({message: reason});
+    });
+});
+    
+
 // Alle Aufgaben eines Users anzeigen
 router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];
@@ -107,6 +131,33 @@ router.get('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Res
                 }).catch((reason: string) => {
                     response.status(400).json({ message: reason });
                 }); 
+});
+
+// Eine Aufgabe löschen
+router.delete('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const errors = [];
+    var currentId: string = '';
+    var currentTodoId = request.params['todoId'];
+
+    if (request.jwtClaimSet != null){
+        currentId = request.jwtClaimSet.userId;
+    }
+    User_Todo.findOne({ userId: currentId, todoId: currentTodoId }).exec().then((user_todo: User_TodoInterface) => {
+        if (!user_todo) {
+            return Promise.reject('No user found.');
+        } else {
+            return User_Todo.remove({ todoId: currentTodoId }).exec();
+        }
+    })
+    .then(() => {
+        return Todo.remove({todoId: currentTodoId}).exec();
+    })
+    .then(() => {
+        response.status(200).json({ }); 
+    })
+    .catch((reason: string) => {
+        response.status(400).json({ message: reason });
+    }); 
 });
 
 export default router;

@@ -13,7 +13,6 @@ export { TodoDb } from '../models/todoDb.model';
 @Injectable()
 export class TodoService {
   private baseURL = 'http://' + window.location.hostname + ':8080';
-  authenticated = false; 
   private options: RequestOptions;
 
 constructor(private http: Http) {
@@ -25,7 +24,19 @@ constructor(private http: Http) {
 
 addTodo(todo: Todo) {
   return this.http.post(this.baseURL + '/todos/todo', todo, this.options)
-  .map((response: Response) => { this.authenticated = false; })
+  .map((response: Response) => { })
+  .catch(this.handleError);
+}
+
+updateTodo(todoId: string, todo: Todo) {
+  return this.http.put(this.baseURL + '/todos/todo/' + todoId, todo, this.options)
+  .map((response: Response) => response.json().data )
+  .catch(this.handleError);
+}
+
+removeTodo(todoId: string) {
+  return this.http.delete(this.baseURL + '/todos/todo/' + todoId, this.options)
+  .map((response: Response) => { } )
   .catch(this.handleError);
 }
 
