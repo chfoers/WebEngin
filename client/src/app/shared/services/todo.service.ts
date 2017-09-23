@@ -30,13 +30,13 @@ addTodo(todo: Todo) {
 
 updateTodo(todoId: string, todo: Todo) {
   return this.http.put(this.baseURL + '/todos/todo/' + todoId, todo, this.options)
-  .map((response: Response) => response.json().data )
+  .map((response: Response) => { })
   .catch(this.handleError);
 }
 
 removeTodo(todoId: string) {
   return this.http.delete(this.baseURL + '/todos/todo/' + todoId, this.options)
-  .map((response: Response) => { } )
+  .map((response: Response) => { })
   .catch(this.handleError);
 }
 

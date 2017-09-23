@@ -54,6 +54,7 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
     });
 });
 
+// Aufgabe ändern
 router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];
     var currentId: string = '';
@@ -66,7 +67,7 @@ router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Res
     Todo.update(
         { "todoId" : currentTodoId },
         {
-          $set: { "todoTitle": todoData.todoTitle, "todoText": todoData.todoText },
+          $set: { "todoTitle": todoData.title, "todoText": todoData.text },
         }
     )
     .then(() => {

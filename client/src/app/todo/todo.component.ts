@@ -37,10 +37,10 @@ export class TodoComponent{
 
   removeTodo() {
     this.notification.error = '';
-      this.todoService.removeTodo(this.todoId).subscribe(
-        data => { },
-        error => { this.notification.error = error; }
-      );
+    this.todoService.removeTodo(this.todoId).subscribe(
+      data => { },
+      error => { this.notification.error = error; }
+    );
   }
 
   addTodo() {
@@ -56,8 +56,7 @@ export class TodoComponent{
     this.todoService.updateTodo(this.todoId, this.todo).subscribe(
       answer => { 
         this.todo = answer;
-      },
-      error => { this.notification.error = error; }
+      }
     );
   }
 }

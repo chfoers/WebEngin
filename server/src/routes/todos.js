@@ -42,16 +42,18 @@ router.post('/todo', (request, response) => {
         response.status(400).json({ message: reason });
     });
 });
+// Aufgabe ändern
 router.put('/todo/:todoId', (request, response) => {
     const errors = [];
     var currentId = '';
     const todoData = request.body;
+    console.log(todoData.title);
     var currentTodoId = request.params['todoId'];
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
     }
     todo_1.Todo.update({ "todoId": currentTodoId }, {
-        $set: { "todoTitle": todoData.todoTitle, "todoText": todoData.todoText },
+        $set: { "todoTitle": todoData.title, "todoText": todoData.text },
     })
         .then(() => {
         response.sendStatus(201);
