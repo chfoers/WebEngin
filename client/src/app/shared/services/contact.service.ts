@@ -2,11 +2,28 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
-
+import { Contact } from '../models/contact.model';
+export { Contact } from '../models/contact.model';
 
 @Injectable()
 export class ContactService {
+  private baseURL = 'http://' + window.location.hostname + ':8080';
+  private options: RequestOptions;
 
-  constructor() { }
+  constructor(private http: Http) { 
+    this.options = new RequestOptions({
+       headers: new Headers({ 'Content-Type': 'application/json' }),
+       withCredentials: true
+    });
+  }
 
+  addContact(email: string) {
+    return this.http.post(this.baseURL + '/contacts', { email }, this.options)
+      .map((r: Response) => { })
+      .catch(this.handleError);
+  }
+
+  private handleError(error: Response | any) {
+    return Observable.throw(error.json().message)
+  }
 }

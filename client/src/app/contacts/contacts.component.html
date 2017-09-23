@@ -1,3 +1,10 @@
-<p>
-  contacts works!
-</p>
+<h1 class="mat-display-1">Kontakte</h1>
+<form>
+    <div layout-gt-xs="row">
+        <md-form-field>
+            <input [(ngModel)]=contactEmail mdInput type="text" placeholder="Emailadresse" class="form-control" id="contactEmail" name="contactEmail" required>
+        </md-form-field>
+    </div>
+    <p></p>
+  <button md-raised-button (click)="addContact()" class="btn btn-default">Anlegen</button>
+</form>

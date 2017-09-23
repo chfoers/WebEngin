@@ -9,6 +9,12 @@ const router = Router();
 router.post('/contact', (request: Request & JwtClaimSetHolder, response: Response, next: NextFunction) => {
 
 const errors = [];
+var userId = '';
+
+
+if (request.jwtClaimSet != null && request.jwtClaimSet.userId != null){ 
+    userId= request.jwtClaimSet.userId;
+}
 
 User.findOne({ email : request.body.email })
     .exec()
@@ -16,19 +22,18 @@ User.findOne({ email : request.body.email })
         if (!contactUser) {
             return Promise.reject('User gibts nicht mit dieser Email');
         }
-            else{
-                const params= [{ ownerId : request.jwtClaimSet.userId}, 
-                {userId: contactUser.userId}];
-                    return Promise.all([Promise.resolve(contactUser),
-                    Contact.findOne().and(params).exec()]);
-            }
+            else{ 
+                const params= [{ ownerId : userId}, 
+                {contactId: contactUser.userId}];
+                return Promise.all([Promise.resolve(contactUser), Contact.findOne().and(params).exec()]);
+                     }
         }).then<ContactInterface>(([contactUser, existingContact]: [UserInterface,
         ContactInterface]) => {
                                 if (existingContact) {
                                     return Promise.reject('Kontakt existiert schon');
                                 }
                                 const contact = new Contact({
-                                    ownerId: request.jwtClaimSet.userId,
+                                    ownerId: userId,
                                     contactId: contactUser.userId,
                                     name: contactUser.name
                                 });

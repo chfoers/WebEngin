@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ContactService, Contact } from '../shared/services/contact.service';
 
 @Component({
   selector: 'app-contacts',
@@ -8,9 +9,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactsComponent implements OnInit {
   notification = { error: '' };
+  contactEmail = '';
 
 
-  constructor() { 
+  constructor(public contactService: ContactService) { 
     
   }
 
@@ -18,4 +20,11 @@ export class ContactsComponent implements OnInit {
     this.notification.error = '';
   }
 
+ addContact() {
+    this.notification.error = '';
+    this.contactService.addContact(this.contactEmail).subscribe(
+      data => {}, //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      error => { this.notification.error = error; }
+    );
+  }
 }

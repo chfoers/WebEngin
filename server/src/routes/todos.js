@@ -47,7 +47,6 @@ router.put('/todo/:todoId', (request, response) => {
     const errors = [];
     var currentId = '';
     const todoData = request.body;
-    console.log(todoData.title);
     var currentTodoId = request.params['todoId'];
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;

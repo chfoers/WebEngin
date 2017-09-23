@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 
 import { UserService } from './shared/services/user.service';
 import { TodoService } from './shared/services/todo.service';
+import { ContactService} from './shared/services/contact.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize } from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
@@ -41,7 +42,7 @@ import { ContactsComponent } from './contacts/contacts.component';
     FormsModule,
     HttpModule
   ],
-  providers: [UserService, TodoService],
+  providers: [UserService, TodoService, ContactService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
