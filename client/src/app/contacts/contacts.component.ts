@@ -41,7 +41,7 @@ export class ContactsComponent implements OnInit {
  addContact() {
     this.notification.error = '';
     this.contactService.addContact(this.contact.email).subscribe(
-      data => { this.router.navigateByUrl('contact/index');  },
+      data => { this.router.navigateByUrl('todo/index');  },
       error => { this.notification.error = error; }
     );
   }
@@ -50,7 +50,7 @@ export class ContactsComponent implements OnInit {
     this.notification.error = '';
     console.log(this.contact.contactId);
     this.contactService.removeContact(this.contact.contactId).subscribe(
-      data => { this.router.navigateByUrl('contact/index'); },
+      data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
     );
   }
