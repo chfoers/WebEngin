@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TodoService, Todo } from '../shared/services/todo.service';
-import { ActivatedRoute } from '@angular/router'; 
+import { ActivatedRoute, Router } from '@angular/router'; 
 
 @Component({
   selector: 'app-todo',
@@ -12,7 +12,7 @@ export class TodoComponent{
   notification = { error: ''};
   todoId = '';
 
-  constructor(private todoService: TodoService, private route: ActivatedRoute) { }
+  constructor(private todoService: TodoService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -38,7 +38,7 @@ export class TodoComponent{
   removeTodo() {
     this.notification.error = '';
     this.todoService.removeTodo(this.todoId).subscribe(
-      data => { },
+      data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
     );
   }
@@ -46,7 +46,7 @@ export class TodoComponent{
   addTodo() {
     this.notification.error = ''; 
     this.todoService.addTodo(this.todo).subscribe(
-      data => { },
+      data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
     );
   }
@@ -54,9 +54,13 @@ export class TodoComponent{
   updateTodo(){
     this.notification.error = ''; 
     this.todoService.updateTodo(this.todoId, this.todo).subscribe(
-      answer => { 
-        this.todo = answer;
-      }
+      data => {
+        answer => { 
+          this.todo = answer;
+        }
+        this.router.navigateByUrl('todo/index');
+      },     
+      error => { this.notification.error = error; }
     );
   }
 }

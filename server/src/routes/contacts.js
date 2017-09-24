@@ -14,7 +14,6 @@ router.get('/contact', authorisationService_1.AuthorisationService.authentificat
         .sort({ name: 'desc' })
         .exec()
         .then((contacts) => {
-        console.log(contacts);
         const foundContacts = contacts.map(contact => {
             return {
                 ownerId: contact.ownerId,
@@ -23,7 +22,9 @@ router.get('/contact', authorisationService_1.AuthorisationService.authentificat
                 email: contact.email
             };
         });
-        response.json({ data: foundContacts });
+        response.status(200).json({ data: foundContacts });
+    }).catch((reason) => {
+        response.status(400).json({ message: reason });
     });
 });
 router.post('/contact', (request, response, next) => {

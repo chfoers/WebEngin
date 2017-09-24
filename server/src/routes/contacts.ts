@@ -15,7 +15,6 @@ router.get('/contact', AuthorisationService.authentificationMiddleware, (request
             .sort({name: 'desc'})
             .exec()
             .then((contacts: ContactInterface[]) => {
-                console.log(contacts)
                 const foundContacts = contacts.map(contact => {                 
                         return {                         
                             ownerId: contact.ownerId , 
@@ -24,7 +23,9 @@ router.get('/contact', AuthorisationService.authentificationMiddleware, (request
                             email: contact.email
                         };
                     });
-                response.json({data: foundContacts});
+                response.status(200).json({data: foundContacts});
+            }).catch((reason: string) => {
+                response.status(400).json({ message: reason });
             });
 });
 
