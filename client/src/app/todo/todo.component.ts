@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent{
-  todo: Todo = { title: '', text: ''}
+  todo: Todo = { title: '', text: '', id: ''}
   notification = { error: ''};
   todoId = '';
 
