@@ -12,7 +12,6 @@ const routes = [
       { path: '', component: LoginComponent },
       { path: 'registration', component: RegistrationComponent },
       { path: 'logout', component: LogoutComponent },
-      { path: 'todo', component: TodoComponent }, //TODO löschen
       { path: 'todo/todoId/:todoId', component: TodoComponent },
       { path: 'todo/index', component: TodoListComponent },
       { path: 'contacts', component: ContactsComponent}
