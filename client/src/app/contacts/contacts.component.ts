@@ -31,7 +31,7 @@ export class ContactsComponent implements OnInit {
       this.contactService.getContact(this.contact.contactId).subscribe(
         answer => { 
           this.contact.email = answer[0].email;
-          this.contact.name= answer[0].name;
+          this.contact.name = answer[0].name;
         },
         error => { this.notification.error = error; }
       );

@@ -27,7 +27,8 @@ export class TodoComponent{
     if(this.todo.id != 'newTodo'){
       this.todoService.getTodo(this.todo.id).subscribe(
         answer => { 
-          this.todo = answer;
+          this.todo.text = answer.text;
+          this.todo.title = answer.title;
         },
         error => { this.notification.error = error; }
       );
