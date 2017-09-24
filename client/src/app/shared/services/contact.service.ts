@@ -4,6 +4,8 @@ import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { Contact } from '../models/contact.model';
 export { Contact } from '../models/contact.model';
+import { User } from '../models/user.model';
+export { User } from '../models/user.model';
 
 @Injectable()
 export class ContactService {
@@ -17,7 +19,7 @@ export class ContactService {
     });
   }
 
-  getContacts() : Observable<Contact[]>{
+  getContacts() : Observable<User[]>{
     return this.http.get(this.baseURL + '/contacts/contact', this.options)
     .map((response: Response) => response.json().data )
     .catch(this.handleError);

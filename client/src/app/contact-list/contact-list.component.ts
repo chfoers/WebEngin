@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ContactService, Contact } from '../shared/services/contact.service';
+import { ContactService, User } from '../shared/services/contact.service';
 import { NgIf, NgFor } from '@angular/common';
 
 @Component({
@@ -8,7 +8,7 @@ import { NgIf, NgFor } from '@angular/common';
   styleUrls: ['./contact-list.component.scss']
 })
 export class ContactListComponent implements OnInit {
-  contactList: Contact[] = [];
+  contactList: User[] = [];
   notification = { error: '' };
 
   constructor(public contactService: ContactService) { }
@@ -20,7 +20,7 @@ export class ContactListComponent implements OnInit {
 
   loadContacts(){
     this.contactService.getContacts().subscribe(
-      data => {this.contactList = data ; console.log(data)},
+      data => {this.contactList = data; console.log(this.contactList)},
       error => {this.notification.error = error}
     );
   }

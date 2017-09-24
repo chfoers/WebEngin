@@ -5,28 +5,38 @@ import { AuthorisationService, JwtClaimSetHolder } from '../services/authorisati
 
 const router = Router();
 
+interface QueryResultType {
+    oneContact: [{
+        userId: string;
+        name: string;
+        email: string;
+    }]
+}
+
 router.get('/contact', AuthorisationService.authentificationMiddleware, (request: Request & JwtClaimSetHolder, response: Response) => {
     var ownerId = '';
     
     if (request.jwtClaimSet != null && request.jwtClaimSet.userId != null){ 
     ownerId= request.jwtClaimSet.userId;
-}
-    Contact.find({ownerId: ownerId})
-            .sort({name: 'desc'})
-            .exec()
-            .then((contacts: ContactInterface[]) => {
-                const foundContacts = contacts.map(contact => {                 
+    }
+
+    Contact.aggregate([
+        {$unwind: "$contactId"}, 
+        {$lookup: {from: "users", localField: "contactId", foreignField: "userId", as: "oneContact"}}, 
+        {$match: {"ownerId" : ownerId}}
+    ])
+    .exec().then((contacts:  QueryResultType[]) => {
+                    const foundContacts = contacts.map(contact => {                 
                         return {                         
-                            ownerId: contact.ownerId , 
-                            contactId: contact.contactId,
-                            name: contact.name,
-                            email: contact.email
+                            userId: contact.oneContact[0].userId,
+                            name: contact.oneContact[0].name,
+                            email: contact.oneContact[0].email
                         };
                     });
-                response.status(200).json({data: foundContacts});
-            }).catch((reason: string) => {
-                response.status(400).json({ message: reason });
-            });
+                    response.status(200).json({ data: foundContacts }); 
+                }).catch((reason: string) => {
+                    response.status(400).json({ message: reason });
+                }); 
 });
 
 router.post('/contact', (request: Request & JwtClaimSetHolder, response: Response, next: NextFunction) => {
@@ -58,8 +68,6 @@ User.findOne({ email : request.body.email })
                                 const contact = new Contact({
                                     ownerId: userId,
                                     contactId: contactUser.userId,
-                                    name: contactUser.name,
-                                    email: contactUser.email
                                 });
                                 return contact.save();
                         }).then ((contact: ContactInterface) => {

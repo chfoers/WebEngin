@@ -10,16 +10,17 @@ router.get('/contact', authorisationService_1.AuthorisationService.authentificat
     if (request.jwtClaimSet != null && request.jwtClaimSet.userId != null) {
         ownerId = request.jwtClaimSet.userId;
     }
-    contact_1.Contact.find({ ownerId: ownerId })
-        .sort({ name: 'desc' })
-        .exec()
-        .then((contacts) => {
+    contact_1.Contact.aggregate([
+        { $unwind: "$contactId" },
+        { $lookup: { from: "users", localField: "contactId", foreignField: "userId", as: "oneContact" } },
+        { $match: { "ownerId": ownerId } }
+    ])
+        .exec().then((contacts) => {
         const foundContacts = contacts.map(contact => {
             return {
-                ownerId: contact.ownerId,
-                contactId: contact.contactId,
-                name: contact.name,
-                email: contact.email
+                userId: contact.oneContact[0].userId,
+                name: contact.oneContact[0].name,
+                email: contact.oneContact[0].email
             };
         });
         response.status(200).json({ data: foundContacts });
@@ -51,8 +52,6 @@ router.post('/contact', (request, response, next) => {
         const contact = new contact_1.Contact({
             ownerId: userId,
             contactId: contactUser.userId,
-            name: contactUser.name,
-            email: contactUser.email
         });
         return contact.save();
     }).then((contact) => {
