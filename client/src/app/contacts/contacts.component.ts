@@ -32,7 +32,6 @@ export class ContactsComponent implements OnInit {
         answer => { 
           this.contact.email = answer[0].email;
           this.contact.name= answer[0].name;
-          this.contact.contactId = answer[0].contactId;
         },
         error => { this.notification.error = error; }
       );
@@ -49,7 +48,8 @@ export class ContactsComponent implements OnInit {
 
   removeContact() {
     this.notification.error = '';
-    this.contactService.removeContact(this.contact.email).subscribe(
+    console.log(this.contact.contactId);
+    this.contactService.removeContact(this.contact.contactId).subscribe(
       data => { this.router.navigateByUrl('contact/index'); },
       error => { this.notification.error = error; }
     );
