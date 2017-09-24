@@ -67,10 +67,21 @@ router.post('/todoToUser', (request: Request & JwtClaimSetHolder, response: Resp
 
     Contact.findOne({ ownerId: currentUserId, contactId: ids.userId }).exec().then((contact: ContactInterface) => {
         if (!contact) {
-            return Promise.reject('No user found.');
+            return Promise.reject('No contact found.');
         } else {
-            console.log("Kontakt:" + contact);
             return User_Todo.findOne({ userId: currentUserId, todoId: ids.todoId }).exec();
+        }
+    }).then((user_todo: User_TodoInterface) => {
+        if (!user_todo) {
+            return Promise.reject('User does not own todo.');
+        } else {
+            return User_Todo.findOne({ userId: ids.userId, todoId: ids.todoId }).exec();
+        }
+    }).then((user_todo: User_TodoInterface) => {
+        if (!user_todo) {
+            return Promise.resolve();
+        } else {     
+            return Promise.reject('Todo already exists.');
         }
     }).then(() => {
         const user_todoObject = new User_Todo({
@@ -79,7 +90,6 @@ router.post('/todoToUser', (request: Request & JwtClaimSetHolder, response: Resp
         });
         const user_todo = new User_Todo(user_todoObject);
         user_todo.save();
-        console.log(user_todo);
         response.sendStatus(201);
     })
     .catch((reason: string) => {

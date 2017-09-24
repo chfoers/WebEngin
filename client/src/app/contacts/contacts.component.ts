@@ -48,7 +48,6 @@ export class ContactsComponent implements OnInit {
 
   removeContact() {
     this.notification.error = '';
-    console.log(this.contact.contactId);
     this.contactService.removeContact(this.contact.contactId).subscribe(
       data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
