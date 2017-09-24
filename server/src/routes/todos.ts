@@ -4,6 +4,7 @@ import ValidationService from '../services/validationService';
 import { Todo, TodoInterface } from '../models/todo';
 import { User, UserInterface } from '../models/user';
 import { User_Todo, User_TodoInterface } from '../models/user_todo';
+import { Contact, ContactInterface } from '../models/contact';
 //Validationservice
 
 const router = Router();
@@ -47,6 +48,38 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
         }
     })
     .then(() => {
+        response.sendStatus(201);
+    })
+    .catch((reason: string) => {
+        response.status(400).json({message: reason});
+    });
+});
+
+// Aufgabe zuweisen
+router.post('/todoToUser', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const ids = request.body;
+    const errors = [];
+    var currentUserId: string = '';
+
+    if (request.jwtClaimSet != null){
+        currentUserId = request.jwtClaimSet.userId;
+    }
+
+    Contact.findOne({ ownerId: currentUserId, contactId: ids.userId }).exec().then((contact: ContactInterface) => {
+        if (!contact) {
+            return Promise.reject('No user found.');
+        } else {
+            console.log("Kontakt:" + contact);
+            return User_Todo.findOne({ userId: currentUserId, todoId: ids.todoId }).exec();
+        }
+    }).then(() => {
+        const user_todoObject = new User_Todo({
+            userId: ids.userId,
+            todoId: ids.todoId
+        });
+        const user_todo = new User_Todo(user_todoObject);
+        user_todo.save();
+        console.log(user_todo);
         response.sendStatus(201);
     })
     .catch((reason: string) => {

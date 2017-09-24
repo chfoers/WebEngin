@@ -3,8 +3,7 @@ import * as uuid from 'node-uuid';
 
 export interface User_TodoInterface extends mongoose.Document {
     userId: string;
-    todoId: string;
-    
+    todoId: string; 
 };
 
 export const User_TodoSchema = new mongoose.Schema({

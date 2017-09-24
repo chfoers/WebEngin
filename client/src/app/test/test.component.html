@@ -1,0 +1,14 @@
+<form>
+    <div layout-gt-xs="row">
+        <md-form-field>
+            <input [(ngModel)]=user_todo.userId mdInput type="text" placeholder="userId" class="form-control"  name="userId" autofocus="autofocus" required>
+        </md-form-field>
+    </div>
+    <div layout-gt-xs="row">
+        <md-form-field>
+            <input [(ngModel)]=user_todo.todoId mdInput type="text" placeholder="todoId" class="form-control" name="todoId" required>
+        </md-form-field>
+      </div>
+    <p></p>
+    <button md-raised-button (click)="todoToUser()" class="btn btn-default">Anlegen</button>
+</form>

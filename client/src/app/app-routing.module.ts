@@ -7,6 +7,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoListComponent} from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { TestComponent } from './test/test.component';
 
 const routes = [
       { path: '', component: LoginComponent },
@@ -15,6 +16,7 @@ const routes = [
       { path: 'todo/todoId/:todoId', component: TodoComponent },
       { path: 'todo/index', component: TodoListComponent },
       { path: 'contact/contactId/:contactId', component: ContactsComponent},
+      { path: 'a', component: TestComponent}
 ];
 
 @NgModule({

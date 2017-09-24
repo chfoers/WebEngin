@@ -4,6 +4,7 @@ const express_1 = require("express");
 const todo_1 = require("../models/todo");
 const user_1 = require("../models/user");
 const user_todo_1 = require("../models/user_todo");
+const contact_1 = require("../models/contact");
 //Validationservice
 const router = express_1.Router();
 // Aufgabe anlegen
@@ -36,6 +37,36 @@ router.post('/todo', (request, response) => {
         }
     })
         .then(() => {
+        response.sendStatus(201);
+    })
+        .catch((reason) => {
+        response.status(400).json({ message: reason });
+    });
+});
+// Aufgabe zuweisen
+router.post('/todoToUser', (request, response) => {
+    const ids = request.body;
+    const errors = [];
+    var currentUserId = '';
+    if (request.jwtClaimSet != null) {
+        currentUserId = request.jwtClaimSet.userId;
+    }
+    contact_1.Contact.findOne({ ownerId: currentUserId, contactId: ids.userId }).exec().then((contact) => {
+        if (!contact) {
+            return Promise.reject('No user found.');
+        }
+        else {
+            console.log("Kontakt:" + contact);
+            return user_todo_1.User_Todo.findOne({ userId: currentUserId, todoId: ids.todoId }).exec();
+        }
+    }).then(() => {
+        const user_todoObject = new user_todo_1.User_Todo({
+            userId: ids.userId,
+            todoId: ids.todoId
+        });
+        const user_todo = new user_todo_1.User_Todo(user_todoObject);
+        user_todo.save();
+        console.log(user_todo);
         response.sendStatus(201);
     })
         .catch((reason) => {
