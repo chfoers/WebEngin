@@ -39,6 +39,58 @@ router.get('/contact', AuthorisationService.authentificationMiddleware, (request
                 }); 
 });
 
+// Eine Aufgabe eines Users anzeigen
+router.get('/contact/:contactId', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const errors = [];
+    var ownerId: string = '';
+    var currentContactId = request.params['contactId'];
+
+    if (request.jwtClaimSet != null){
+        ownerId = request.jwtClaimSet.userId;
+    }   
+    Contact.aggregate([
+        {$unwind: "$contactId"}, 
+        {$lookup: {from: "users", localField: "contactId", foreignField: "userId", as: "oneContact"}}, 
+        {$match: {"ownerId" : ownerId, "contactId": currentContactId}}
+    ])
+    .exec().then((contacts:  QueryResultType[]) => {
+            const foundContacts = contacts.map(contact => {                 
+                return {                         
+                    userId: contact.oneContact[0].userId,
+                    name: contact.oneContact[0].name,
+                    email: contact.oneContact[0].email
+                };
+            });
+            response.status(200).json({ data: foundContacts }); 
+    }).catch((reason: string) => {
+            response.status(400).json({ message: reason });
+    }); 
+});
+
+// Einen Kontakt löschen
+router.delete('/contact/:contactId', (request: Request & JwtClaimSetHolder, response: Response) => {
+    const errors = [];
+    var ownerId: string = '';
+    var currentContactId = request.params['contactId'];
+
+    if (request.jwtClaimSet != null){
+        ownerId = request.jwtClaimSet.userId;
+    }  
+    Contact.findOne({ ownerId: ownerId, contactId: currentContactId }).exec().then((contact: ContactInterface) => {
+        if (!contact) {
+            return Promise.reject('No user found.');
+        } else {
+            return Contact.remove({ contactId: currentContactId }).exec();
+        }
+    })
+    .then(() => {
+        response.status(200).json({ }); 
+    })
+    .catch((reason: string) => {
+        response.status(400).json({ message: reason });
+    }); 
+});
+
 router.post('/contact', (request: Request & JwtClaimSetHolder, response: Response, next: NextFunction) => {
 
 const errors = [];

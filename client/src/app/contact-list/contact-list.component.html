@@ -3,7 +3,7 @@
   <div class="panel-body contacts">
     <div *ngFor="let contact of  contactList">
       <div *ngIf=" contactList.indexOf(contact)" class="contact-separator"></div>
-      <a class="message-received" [routerLink]="['/contact/contactId', contact.id]">
+      <a class="message-received" [routerLink]="['/contact/contactId', contact.userId]">
         <div class="contact-name">{{contact.name}}</div>
         <div class="contact-email">{{contact.email}}</div>
       </a>

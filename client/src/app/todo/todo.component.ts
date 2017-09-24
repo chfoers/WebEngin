@@ -10,14 +10,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class TodoComponent{
   todo: Todo = { title: '', text: '', id: ''}
   notification = { error: ''};
-  todoId = '';
 
   constructor(private todoService: TodoService, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     this.route.params.subscribe(
       params => {
-        this.todoId = params['todoId'];
+        this.todo.id = params['todoId'];
         this.loadTodo();
       }
     );
@@ -25,8 +24,8 @@ export class TodoComponent{
 
   loadTodo() {
     this.notification.error = '';
-    if(this.todoId != 'newTodo'){
-      this.todoService.getTodo(this.todoId).subscribe(
+    if(this.todo.id != 'newTodo'){
+      this.todoService.getTodo(this.todo.id).subscribe(
         answer => { 
           this.todo = answer;
         },
@@ -37,7 +36,7 @@ export class TodoComponent{
 
   removeTodo() {
     this.notification.error = '';
-    this.todoService.removeTodo(this.todoId).subscribe(
+    this.todoService.removeTodo(this.todo.id).subscribe(
       data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
     );
@@ -53,7 +52,7 @@ export class TodoComponent{
 
   updateTodo(){
     this.notification.error = ''; 
-    this.todoService.updateTodo(this.todoId, this.todo).subscribe(
+    this.todoService.updateTodo(this.todo.id, this.todo).subscribe(
       data => {
         answer => { 
           this.todo = answer;

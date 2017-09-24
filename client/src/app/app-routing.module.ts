@@ -15,7 +15,7 @@ const routes = [
       { path: 'logout', component: LogoutComponent },
       { path: 'todo/todoId/:todoId', component: TodoComponent },
       { path: 'todo/index', component: TodoListComponent },
-      { path: 'contacts', component: ContactsComponent},
+      { path: 'contact/contactId/:contactId', component: ContactsComponent},
       { path: 'contact/index', component: ContactListComponent}
 ];
 

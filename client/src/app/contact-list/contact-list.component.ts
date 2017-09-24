@@ -20,7 +20,7 @@ export class ContactListComponent implements OnInit {
 
   loadContacts(){
     this.contactService.getContacts().subscribe(
-      data => {this.contactList = data; console.log(this.contactList)},
+      data => {this.contactList = data; },
       error => {this.notification.error = error}
     );
   }

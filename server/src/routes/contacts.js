@@ -28,6 +28,55 @@ router.get('/contact', authorisationService_1.AuthorisationService.authentificat
         response.status(400).json({ message: reason });
     });
 });
+// Eine Aufgabe eines Users anzeigen
+router.get('/contact/:contactId', (request, response) => {
+    const errors = [];
+    var ownerId = '';
+    var currentContactId = request.params['contactId'];
+    if (request.jwtClaimSet != null) {
+        ownerId = request.jwtClaimSet.userId;
+    }
+    contact_1.Contact.aggregate([
+        { $unwind: "$contactId" },
+        { $lookup: { from: "users", localField: "contactId", foreignField: "userId", as: "oneContact" } },
+        { $match: { "ownerId": ownerId, "contactId": currentContactId } }
+    ])
+        .exec().then((contacts) => {
+        const foundContacts = contacts.map(contact => {
+            return {
+                userId: contact.oneContact[0].userId,
+                name: contact.oneContact[0].name,
+                email: contact.oneContact[0].email
+            };
+        });
+        response.status(200).json({ data: foundContacts });
+    }).catch((reason) => {
+        response.status(400).json({ message: reason });
+    });
+});
+// Einen Kontakt löschen
+router.delete('/contact/:contactId', (request, response) => {
+    const errors = [];
+    var ownerId = '';
+    var currentContactId = request.params['contactId'];
+    if (request.jwtClaimSet != null) {
+        ownerId = request.jwtClaimSet.userId;
+    }
+    contact_1.Contact.findOne({ ownerId: ownerId, contactId: currentContactId }).exec().then((contact) => {
+        if (!contact) {
+            return Promise.reject('No user found.');
+        }
+        else {
+            return contact_1.Contact.remove({ contactId: currentContactId }).exec();
+        }
+    })
+        .then(() => {
+        response.status(200).json({});
+    })
+        .catch((reason) => {
+        response.status(400).json({ message: reason });
+    });
+});
 router.post('/contact', (request, response, next) => {
     const errors = [];
     var userId = '';

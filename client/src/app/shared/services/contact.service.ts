@@ -25,10 +25,22 @@ export class ContactService {
     .catch(this.handleError);
   }
 
+  getContact(contactId: string): Observable<Contact> {
+    return this.http.get(this.baseURL + '/contacts/contact/' + contactId, this.options)
+      .map((response: Response) => response.json().data )
+    .catch(this.handleError);
+  }
+
   addContact(email: string) {
     return this.http.post(this.baseURL + '/contacts/contact', { email }, this.options)
       .map((r: Response) => { })
       .catch(this.handleError);
+  }
+
+  removeContact(contactId: string) {
+    return this.http.delete(this.baseURL + '/contacts/contact/' + contactId, this.options)
+    .map((response: Response) => { })
+    .catch(this.handleError);
   }
 
   private handleError(error: Response | any) {

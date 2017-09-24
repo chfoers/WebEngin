@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { ContactService, Contact } from '../shared/services/contact.service';
 
 @Component({
@@ -9,23 +9,49 @@ import { ContactService, Contact } from '../shared/services/contact.service';
 })
 export class ContactsComponent implements OnInit {
   notification = { error: '' };
-  contactEmail = '';
+  contact: Contact = { ownerId: '', contactId: '', name: '', email: ''} 
 
 
-  constructor(private router: Router, public contactService: ContactService) { 
+  constructor(private router: Router, private route: ActivatedRoute,  public contactService: ContactService) { 
     
   }
 
   ngOnInit() {
+    this.route.params.subscribe(
+      params => {
+        this.contact.contactId = params['contactId'];
+        this.loadContact();
+      }
+    );
+  }
+
+  loadContact() {
     this.notification.error = '';
+    if(this.contact.contactId != 'newContact'){
+      this.contactService.getContact(this.contact.contactId).subscribe(
+        answer => { 
+          this.contact.email = answer[0].email;
+          this.contact.name= answer[0].name;
+          this.contact.contactId = answer[0].contactId;
+        },
+        error => { this.notification.error = error; }
+      );
+    }
   }
 
  addContact() {
     this.notification.error = '';
-    this.contactService.addContact(this.contactEmail).subscribe(
+    this.contactService.addContact(this.contact.email).subscribe(
       data => { this.router.navigateByUrl('contact/index');  },
       error => { this.notification.error = error; }
     );
   }
 
+  removeContact() {
+    this.notification.error = '';
+    this.contactService.removeContact(this.contact.email).subscribe(
+      data => { this.router.navigateByUrl('contact/index'); },
+      error => { this.notification.error = error; }
+    );
+  }
 }
