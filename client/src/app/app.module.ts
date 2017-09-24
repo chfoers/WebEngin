@@ -18,6 +18,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
+import { ContactListComponent } from './contact-list/contact-list.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { ContactsComponent } from './contacts/contacts.component';
     LogoutComponent,
     TodoComponent,
     TodoListComponent,
-    ContactsComponent
+    ContactsComponent,
+    ContactListComponent
   ],
   imports: [
     BrowserModule,

@@ -27,4 +27,5 @@ export class ContactsComponent implements OnInit {
       error => { this.notification.error = error; }
     );
   }
+
 }

@@ -17,6 +17,14 @@ export class ContactService {
     });
   }
 
+  getContacts() : Observable<Contact[]>{
+    var x = this.http.get(this.baseURL + '/contacts/contact', this.options)
+    .map((r: Response)=>{})
+    .catch(this.handleError);
+    console.log(x);
+    return x;
+  }
+
   addContact(email: string) {
     return this.http.post(this.baseURL + '/contacts/contact', { email }, this.options)
       .map((r: Response) => { })

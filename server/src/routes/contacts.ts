@@ -5,6 +5,28 @@ import { AuthorisationService, JwtClaimSetHolder } from '../services/authorisati
 
 const router = Router();
 
+router.get('/contact', AuthorisationService.authentificationMiddleware, (request: Request & JwtClaimSetHolder, response: Response) => {
+    var ownerId = '';
+    
+    if (request.jwtClaimSet != null && request.jwtClaimSet.userId != null){ 
+    ownerId= request.jwtClaimSet.userId;
+}
+    Contact.find({ownerId: ownerId})
+            .sort({name: 'desc'})
+            .exec()
+            .then((contacts: ContactInterface[]) => {
+                console.log(contacts)
+                const foundContacts = contacts.map(contact => {                 
+                        return {                         
+                            ownerId: contact.ownerId , 
+                            contactId: contact.contactId,
+                            name: contact.name,
+                            email: contact.email
+                        };
+                    });
+                response.json({data: foundContacts});
+            });
+});
 
 router.post('/contact', (request: Request & JwtClaimSetHolder, response: Response, next: NextFunction) => {
 
@@ -27,7 +49,7 @@ User.findOne({ email : request.body.email })
                 {contactId: contactUser.userId}];
                 return Promise.all([Promise.resolve(contactUser), Contact.findOne().and(params).exec()]);
                      }
-        }).then(([contactUser, existingContact]: [UserInterface, //TODO: <ContactInterface>
+        }).then(([contactUser, existingContact]: [UserInterface,
         ContactInterface]) => {
                                 if (existingContact) {
                                     return Promise.reject('Kontakt existiert schon');
@@ -35,7 +57,8 @@ User.findOne({ email : request.body.email })
                                 const contact = new Contact({
                                     ownerId: userId,
                                     contactId: contactUser.userId,
-                                    name: contactUser.name
+                                    name: contactUser.name,
+                                    email: contactUser.email
                                 });
                                 return contact.save();
                         }).then ((contact: ContactInterface) => {
