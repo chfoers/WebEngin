@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TodoService, Todo, TodoDb } from '../shared/services/todo.service';
+import { TodoService, Todo } from '../shared/services/todo.service';
 import { NgIf, NgFor } from '@angular/common'
 
 @Component({
@@ -8,7 +8,7 @@ import { NgIf, NgFor } from '@angular/common'
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
-  todos: TodoDb[] = [];
+  todos: Todo[] = [];
   notification = { error: '' };
 
   constructor(public todoService: TodoService) { }
