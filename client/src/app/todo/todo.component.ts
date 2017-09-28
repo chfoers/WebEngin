@@ -8,7 +8,7 @@ import { ActivatedRoute, Router } from '@angular/router';
   styleUrls: ['./todo.component.scss']
 })
 export class TodoComponent{
-  todo: Todo = { title: '', text: '', id: ''}
+  todo: Todo = { title: '', text: '', id: '', owner: ''}
   notification = { error: ''};
 
   constructor(private todoService: TodoService, private route: ActivatedRoute, private router: Router) { }

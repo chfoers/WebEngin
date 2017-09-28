@@ -8,6 +8,7 @@ const cookieParser = require("cookie-parser");
 const users_1 = require("./routes/users");
 const todos_1 = require("./routes/todos");
 const contacts_1 = require("./routes/contacts");
+const user_todos_1 = require("./routes/user_todos");
 const config_1 = require("./config");
 const authorisationService_1 = require("./services/authorisationService");
 function startServer() {
@@ -19,6 +20,7 @@ function startServer() {
     app.use('/users', users_1.default);
     app.use('/todos', todos_1.default);
     app.use('/contacts', contacts_1.default);
+    app.use('/user_todos', user_todos_1.default);
     app.listen(8080, () => {
         console.log('listening on port 8080!');
     });

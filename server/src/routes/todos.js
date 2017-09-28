@@ -56,7 +56,6 @@ router.post('/todoToUser', (request, response) => {
             return Promise.reject('No contact found.');
         }
         else {
-            console.log(contact);
             return user_todo_1.User_Todo.findOne({ userId: currentUserId, todoId: ids.todoId }).exec();
         }
     }).then((user_todo) => {
@@ -64,12 +63,10 @@ router.post('/todoToUser', (request, response) => {
             return Promise.reject('User does not own todo.');
         }
         else {
-            console.log(user_todo);
             return user_todo_1.User_Todo.findOne({ userId: ids.userId, todoId: ids.todoId }).exec();
         }
     }).then((user_todo) => {
         if (!user_todo) {
-            console.log(user_todo);
             return Promise.resolve();
         }
         else {

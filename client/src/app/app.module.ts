@@ -9,10 +9,13 @@ import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 
 import { UserService } from './shared/services/user.service';
+import { User_TodoService } from './shared/services/user_todo.service';
 import { TodoService } from './shared/services/todo.service';
 import { ContactService} from './shared/services/contact.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize } from '@angular/material';
+import { MatGridListModule} from '@angular/material';
+import { MatSelectModule} from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
 import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';
@@ -41,10 +44,12 @@ import { TestComponent } from './test/test.component';
     MdToolbarModule,
     MdIconModule,
     MdInputModule,
+    MatGridListModule,
+    MatSelectModule,
     FormsModule,
     HttpModule
   ],
-  providers: [UserService, TodoService, ContactService],
+  providers: [UserService, TodoService, ContactService, User_TodoService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

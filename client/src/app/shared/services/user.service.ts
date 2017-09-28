@@ -41,6 +41,12 @@ export class UserService {
     .catch(this.handleError);
   }
 
+  getMe(){
+    return this.http.get(this.baseURL + '/users/getMe/', this.options)
+      .map((r: Response) => r.json().data )
+    .catch(this.handleError);
+  }
+
   private handleError(error: Response | any) {
     return Observable.throw(error.json().message)
   }

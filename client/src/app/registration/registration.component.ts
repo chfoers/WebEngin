@@ -8,7 +8,7 @@ import { UserService, User } from '../shared/services/user.service';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent {
-  user: User = { name: '', email: '', password: '', password2: '' };
+  user: User = { userId: '', name: '', email: '', password: '', password2: '' };
   notification = { error: '' };
 
   constructor(private router: Router, private userService: UserService) { }

@@ -62,4 +62,20 @@ router.post('/registration', (request: Request, response: Response, next: NextFu
         response.status(400).json({message: reason});
     });
 });
+
+/*
+ * getMe
+ * Returns the Active user object
+ */
+router.get('/getMe', (request: Request & JwtClaimSetHolder, response: Response) => {
+    var user;
+
+    if (request.jwtClaimSet != null){
+        user = request.jwtClaimSet;
+    }
+
+    response.status(200).json({ data: user });
+});
+
+
 export default router;
