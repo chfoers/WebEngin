@@ -1,4 +1,6 @@
-<h1 class="mat-display-1">Kontakte</h1>
+<md-card>
+  <h1 *ngIf="contact.email == ''" class="mat-display-1">Neuer Kontakt</h1>
+  <h1 *ngIf="contact.email != ''" class="mat-display-1">Kontakt löschen</h1>
 <form>
     <div layout-gt-xs="row">
         <md-form-field>
@@ -6,6 +8,17 @@
         </md-form-field>
     </div>
     <p></p>
-  <button md-raised-button (click)="addContact()" class="btn btn-default">Anlegen</button>
-  <button md-raised-button (click)="removeContact()" class="btn btn-default">Löschen</button>
+  <button *ngIf="contact.email == ''"  md-raised-button (click)="addContact()" class="btn btn-default">Anlegen</button>
+  <button *ngIf="contact.email != ''"  md-raised-button (click)="removeContact()" class="btn btn-default">Löschen</button>
 </form>
+</md-card>
+
+<div class="col-md-3">
+    asd
+</div>
+<div class="col-md-2">
+    asd
+</div>
+<div class="col-md-4">
+    asd
+</div>
