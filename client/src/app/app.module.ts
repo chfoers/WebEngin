@@ -22,6 +22,7 @@ import { TodoComponent } from './todo/todo.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { TestComponent } from './test/test.component';
+import { ContactListComponent } from './contact-list/contact-list.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { TestComponent } from './test/test.component';
     TodoComponent,
     TodoListComponent,
     ContactsComponent,
-    TestComponent
+    TestComponent,
+    ContactListComponent
   ],
   imports: [
     BrowserModule,
