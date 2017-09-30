@@ -9,14 +9,15 @@ const contact_1 = require("../models/contact");
 const router = express_1.Router();
 // Aufgabe anlegen
 router.post('/todo', (request, response) => {
+    console.log("1");
     const todoData = request.body;
     const errors = [];
-    var currentEmail;
-    currentEmail = '';
+    var currentUserId;
+    currentUserId = '';
     if (request.jwtClaimSet != null) {
-        currentEmail = request.jwtClaimSet.email;
+        currentUserId = request.jwtClaimSet.userId;
     }
-    user_1.User.findOne({ email: currentEmail }).exec().then((user) => {
+    user_1.User.findOne({ userId: currentUserId }).exec().then((user) => {
         if (!user) {
             return Promise.reject('No user found.');
         }

@@ -19,16 +19,15 @@ interface QueryResultType {
 
 // Aufgabe anlegen
 router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
+    console.log("1");
     const todoData = request.body;
     const errors = [];
-    var currentEmail: string;
-    currentEmail = '';
-
+    var currentUserId: string;
+    currentUserId = '';
     if (request.jwtClaimSet != null){
-        currentEmail = request.jwtClaimSet.email;
+        currentUserId = request.jwtClaimSet.userId;
     }
-
-    User.findOne({ email: currentEmail }).exec().then((user: UserInterface) => {
+    User.findOne({ userId: currentUserId}).exec().then((user: UserInterface) => {
         if (!user) {
             return Promise.reject('No user found.');
         } else {
