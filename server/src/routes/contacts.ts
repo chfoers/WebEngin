@@ -23,7 +23,7 @@ router.get('/contact', AuthorisationService.authentificationMiddleware, (request
     Contact.aggregate([
         {$unwind: "$contactId"}, 
         {$lookup: {from: "users", localField: "contactId", foreignField: "userId", as: "oneContact"}}, 
-        {$match: {"ownerId" : ownerId}}
+        {$match: {ownerId : ownerId}},
     ])
     .exec().then((contacts:  QueryResultType[]) => {
                     const foundContacts = contacts.map(contact => {                 
@@ -76,12 +76,17 @@ router.delete('/contact/:contactId', (request: Request & JwtClaimSetHolder, resp
     if (request.jwtClaimSet != null){
         ownerId = request.jwtClaimSet.userId;
     }  
-    Contact.findOne({ ownerId: ownerId, contactId: currentContactId }).exec().then((contact: ContactInterface) => {
-        if (!contact) {
-            return Promise.reject('No user found.');
-        } else {
-            return Contact.remove({ contactId: currentContactId }).exec();
-        }
+    Contact.find({$or:[
+                    {ownerId: currentContactId, contactId: ownerId},
+                    {ownerId: ownerId, contactId: currentContactId}
+                    ]}).exec().then((contacts: ContactInterface[]) => {
+        contacts.forEach(contact => { 
+            if (!contact) {
+                return Promise.reject('Contact not found.');
+            } else {
+                return Contact.remove(contact).exec();
+            }
+        });
     })
     .then(() => {
         response.status(200).json({ }); 
@@ -91,6 +96,8 @@ router.delete('/contact/:contactId', (request: Request & JwtClaimSetHolder, resp
     }); 
 });
 
+
+//Kontakt erstellen
 router.post('/contact', (request: Request & JwtClaimSetHolder, response: Response, next: NextFunction) => {
 
 const errors = [];
@@ -112,15 +119,22 @@ User.findOne({ email : request.body.email })
                 {contactId: contactUser.userId}];
                 return Promise.all([Promise.resolve(contactUser), Contact.findOne().and(params).exec()]);
                      }
-        }).then(([contactUser, existingContact]: [UserInterface,
-        ContactInterface]) => {
+        })
+    .then(([contactUser, existingContact]: [UserInterface,ContactInterface]) => {
                                 if (existingContact) {
                                     return Promise.reject('Kontakt existiert schon');
                                 }
                                 if (userId == contactUser.userId){
                                     return Promise.reject('Man kann sich nicht selbst als Kontakt hinzügen')
-                                }
-                                const contact = new Contact({
+                                } 
+                                
+                                var contact2 = new Contact({
+                                    ownerId: contactUser.userId,
+                                    contactId: userId,
+                                });
+                                contact2.save();
+                                
+                                var contact = new Contact({
                                     ownerId: userId,
                                     contactId: contactUser.userId,
                                 });

@@ -33,7 +33,7 @@ export class ContactService {
 
   addContact(email: string) {
     return this.http.post(this.baseURL + '/contacts/contact', { email }, this.options)
-      .map((r: Response) => { })
+      .map((r: Response) => {  })
       .catch(this.handleError);
   }
 
