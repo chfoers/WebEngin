@@ -39,7 +39,7 @@ router.get('/contact', AuthorisationService.authentificationMiddleware, (request
                 }); 
 });
 
-// Eine Aufgabe eines Users anzeigen
+// Einzelnen Kontakt anzeigen
 router.get('/contact/:contactId', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];
     var ownerId: string = '';
@@ -116,6 +116,9 @@ User.findOne({ email : request.body.email })
         ContactInterface]) => {
                                 if (existingContact) {
                                     return Promise.reject('Kontakt existiert schon');
+                                }
+                                if (userId == contactUser.userId){
+                                    return Promise.reject('Man kann sich nicht selbst als Kontakt hinzügen')
                                 }
                                 const contact = new Contact({
                                     ownerId: userId,

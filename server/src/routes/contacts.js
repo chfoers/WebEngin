@@ -28,7 +28,7 @@ router.get('/contact', authorisationService_1.AuthorisationService.authentificat
         response.status(400).json({ message: reason });
     });
 });
-// Eine Aufgabe eines Users anzeigen
+// Einzelnen Kontakt anzeigen
 router.get('/contact/:contactId', (request, response) => {
     const errors = [];
     var ownerId = '';
@@ -97,6 +97,9 @@ router.post('/contact', (request, response, next) => {
     }).then(([contactUser, existingContact]) => {
         if (existingContact) {
             return Promise.reject('Kontakt existiert schon');
+        }
+        if (userId == contactUser.userId) {
+            return Promise.reject('Man kann sich nicht selbst als Kontakt hinzügen');
         }
         const contact = new contact_1.Contact({
             ownerId: userId,

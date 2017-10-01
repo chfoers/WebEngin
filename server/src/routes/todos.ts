@@ -19,7 +19,6 @@ interface QueryResultType {
 
 // Aufgabe anlegen
 router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
-    console.log("1");
     const todoData = request.body;
     const errors = [];
     var currentUserId: string;

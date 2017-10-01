@@ -9,7 +9,8 @@ import { ContactService, Contact } from '../shared/services/contact.service';
 })
 export class ContactsComponent implements OnInit {
   notification = { error: '' };
-  contact: Contact = { ownerId: '', contactId: '', name: '', email: ''} 
+  contact: Contact = { ownerId: '', contactId: '', name: '', email: ''};
+  isNew = true;
 
 
   constructor(private router: Router, private route: ActivatedRoute,  public contactService: ContactService) { 
@@ -28,6 +29,7 @@ export class ContactsComponent implements OnInit {
   loadContact() {
     this.notification.error = '';
     if(this.contact.contactId != 'newContact'){
+      this.isNew = false;
       this.contactService.getContact(this.contact.contactId).subscribe(
         answer => { 
           this.contact.email = answer[0].email;
@@ -36,12 +38,15 @@ export class ContactsComponent implements OnInit {
         error => { this.notification.error = error; }
       );
     }
+    else {
+      this.isNew = true;
+    }
   }
 
  addContact() {
     this.notification.error = '';
     this.contactService.addContact(this.contact.email).subscribe(
-      data => { this.router.navigateByUrl('todo/index');  },
+      data => { this.router.navigateByUrl('contact/index');  },
       error => { this.notification.error = error; }
     );
   }
@@ -49,7 +54,7 @@ export class ContactsComponent implements OnInit {
   removeContact() {
     this.notification.error = '';
     this.contactService.removeContact(this.contact.contactId).subscribe(
-      data => { this.router.navigateByUrl('todo/index'); },
+      data => { this.router.navigateByUrl('contact/index'); },
       error => { this.notification.error = error; }
     );
   }

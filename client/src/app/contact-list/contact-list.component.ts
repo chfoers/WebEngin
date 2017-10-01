@@ -17,8 +17,7 @@ export class ContactListComponent implements OnInit {
       this.notification.error = '';
       this.loadContacts();
   }
-
-  
+ 
   loadContacts(){
     this.contactService.getContacts().subscribe(
       data => {this.contactList = data;},

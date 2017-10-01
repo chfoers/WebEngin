@@ -37,9 +37,11 @@ export class TodoListComponent implements OnInit {
     loadTodos() {
       this.todoService.getTodos().subscribe(
         todos => { this.todos = todos;
+       //   console.log(todos)
                     todos.forEach(todo => {
                       todo.owner = this.me.userId;
                     }); 
+         //           console.log(todos)
                   },
         error => { this.notification.error = error; }
       );

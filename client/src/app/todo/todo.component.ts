@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class TodoComponent{
   todo: Todo = { title: '', text: '', id: '', owner: ''}
   notification = { error: ''};
-  newElement = true;
+  isNew = true;
 
   constructor(private todoService: TodoService, private route: ActivatedRoute, private router: Router) { }
 
@@ -26,7 +26,7 @@ export class TodoComponent{
   loadTodo() {
     this.notification.error = '';
     if(this.todo.id != 'newTodo'){
-      this.newElement = false;
+      this.isNew = false;
       this.todoService.getTodo(this.todo.id).subscribe(
         answer => { 
           this.todo.text = answer.text;
@@ -36,7 +36,7 @@ export class TodoComponent{
       );
     }
     else {
-      this.newElement = true;
+      this.isNew = true;
     }
   }
 

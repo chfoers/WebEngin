@@ -9,7 +9,6 @@ const contact_1 = require("../models/contact");
 const router = express_1.Router();
 // Aufgabe anlegen
 router.post('/todo', (request, response) => {
-    console.log("1");
     const todoData = request.body;
     const errors = [];
     var currentUserId;

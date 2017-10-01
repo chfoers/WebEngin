@@ -14,7 +14,7 @@
         <hr>
         <div class="row" *ngFor="let contact of contactList" id="{{contact.name}}">
             <!--<div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>-->
-              <div class="col-md-3">{{contact.name}}</div>
+              <div class="col-md-3"><a class="oneContact" [routerLink]="['/contact/contactId/', contact.userId]">{{contact.name}}</a></div>
               <div class="col-md-9">{{contact.email}}</div>
         </div> 
       </form>
