@@ -25,5 +25,13 @@ export class ContactListComponent implements OnInit {
     );
   }
 
+  removeContact(contactId: string) {
+    this.notification.error = '';
+    this.contactService.removeContact(contactId).subscribe(
+      data => { this.router.navigateByUrl('contact/index'); },
+      error => { this.notification.error = error; }
+    );
+    window.location.reload();
+  }
 }
 

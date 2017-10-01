@@ -9,20 +9,29 @@
       <form>
         <div class="row">
           <div class="col-md-3">Titel</div>
-          <div class="col-md-6">Beschreibung</div>
+          <div class="col-md-3">Beschreibung</div>
           <div class="col-md-3">Besitzer</div>
+          <div class="col-md-3">Funktionen</div>
         </div>
         <hr>
         <div class="row" *ngFor="let todo of todos" id="{{todo.id}}">
             <!--<div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>-->
-              <div class="col-md-3 todo-title "><a class="oneTodo" [routerLink]="['/todo/todoId', todo.id]">{{todo.title}}</a></div>
-              <div class="col-md-6 todo-text ">{{todo.text}}</div>
+              <div class="col-md-3 todo-title ">{{todo.title}}</div>
+              <div class="col-md-3 todo-text ">{{todo.text}}</div>
               <div class="col-md-3">
                 <md-select placeholder="Ich" [(ngModel)]="todo.owner" name="{{todo.id}}">
                   <md-option *ngFor="let contact of contactList" [value]="contact.userId" (click)="update()" >
                     {{contact.name}}
                   </md-option>
                 </md-select>
+              </div>
+              <div class="col-md-3">
+                <button [routerLink]="['/todo/todoId', todo.id]" md-mini-fab> 
+                <md-icon class="md-24">build</md-icon>
+                </button>
+                <button (click)="removeTodo(todo.id)" md-mini-fab> 
+                <md-icon class="md-24">delete</md-icon>
+                </button>
               </div>
         </div> 
       </form>

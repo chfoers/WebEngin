@@ -9,13 +9,19 @@
       <form>
         <div class="row">
           <div class="col-md-3">Name</div>
-          <div class="col-md-9">E-Mail</div>
+          <div class="col-md-6">E-Mail</div>
+          <div class="col-md-3">Funktionen</div>
         </div>
         <hr>
         <div class="row" *ngFor="let contact of contactList" id="{{contact.name}}">
             <!--<div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>-->
-              <div class="col-md-3"><a class="oneContact" [routerLink]="['/contact/contactId/', contact.userId]">{{contact.name}}</a></div>
-              <div class="col-md-9">{{contact.email}}</div>
+              <div class="col-md-3">{{contact.name}}</div>
+              <div class="col-md-6">{{contact.email}}</div>
+              <div class="col-md-3">
+              <button (click)="removeContact(contact.userId)" md-mini-fab> 
+              <md-icon class="md-24">delete</md-icon>
+              </button>
+              </div>
         </div> 
       </form>
     </div>
