@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
+import { Cookie } from 'ng2-cookies';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
 import { AuthorisationData } from '../models/authorisationData.model';
@@ -21,6 +22,14 @@ export class UserService {
       headers: new Headers({ 'Content-Type': 'application/json' }),
       withCredentials: true
     });
+  }
+
+  isAuthenthicated() {
+    if (Cookie.get('jwtToken') == ''){
+      return false;
+    } else {
+      return true;
+    }
   }
 
   login(authorisationData: AuthorisationData) {

@@ -49,7 +49,6 @@ export class TodoComponent{
 
   addTodo() {
     this.notification.error = ''; 
-    console.log("Hi");
     this.todoService.addTodo(this.todo).subscribe(
       data => { this.router.navigateByUrl('todo/index'); },
       error => { this.notification.error = error; }
