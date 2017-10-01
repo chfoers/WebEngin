@@ -39,9 +39,11 @@ router.delete('/logout', (request, response) => {
 });
 // Sign Up
 router.post('/registration', (request, response, next) => {
-    const userData = request.body;
-    const user = new user_1.User(userData);
-    if (userData['password'] !== userData['password2']) {
+    const uD = request.body;
+    var user = new user_1.User();
+    user.name = uD.name;
+    user.email = uD.email;
+    if (uD.password !== uD.password2) {
         response.status(407).json({ message: 'password does not match password confirmation!' });
         return;
     }
@@ -50,7 +52,7 @@ router.post('/registration', (request, response, next) => {
             return Promise.reject('A user with this email already exists');
         }
         else {
-            return authorisationService_1.AuthorisationService.setHashedPassword(user, user.password);
+            return authorisationService_1.AuthorisationService.setHashedPassword(user, uD.password);
         }
     }).then((unsavedUser) => {
         return user.save();
