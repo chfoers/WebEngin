@@ -48,10 +48,12 @@ export class TodoListComponent implements OnInit {
     removeTodo(todoId: string) {
       this.notification.error = '';
       this.todoService.removeTodo(todoId).subscribe(
-        data => { this.router.navigateByUrl('todo/index'); },
+        data => { 
+          this.router.navigateByUrl('todo/index'); 
+          this.loadTodos();      
+        },
         error => { this.notification.error = error; }
       );
-      window.location.reload();
     }
 
     loadContacts(){
