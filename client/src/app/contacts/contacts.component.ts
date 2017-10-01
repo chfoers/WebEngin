@@ -37,8 +37,7 @@ export class ContactsComponent implements OnInit {
         },
         error => { this.notification.error = error; }
       );
-    }
-    else {
+    } else {
       this.isNew = true;
     }
   }
