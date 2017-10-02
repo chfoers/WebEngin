@@ -49,21 +49,21 @@ router.post('/registration', (request: Request, response: Response, next: NextFu
 
     if (uD.password !== uD.password2) {
         response.status(400).json({message: 'Password und Password wiederholen müssen gleich sein'});
-    }
-
-    User.findOne({ email: user.email }).exec().then((existingUser: UserInterface) => {
-        if (existingUser) {
-            return Promise.reject('Email-Adresse ist bereits vergeben');
-        } else {
-            return AuthorisationService.setHashedPassword(user, uD.password);
-        }
-    }).then((unsavedUser: UserInterface) => {
-        return user.save();
-    }).then(() => {
-        response.sendStatus(201);
-    }).catch((reason: string) => {
-        response.status(400).json({message: reason});
-    });
+    } else {
+        User.findOne({ email: user.email }).exec().then((existingUser: UserInterface) => {
+            if (existingUser) {
+                return Promise.reject('Email-Adresse ist bereits vergeben');
+            } else {
+                return AuthorisationService.setHashedPassword(user, uD.password);
+            }
+        }).then((unsavedUser: UserInterface) => {
+            return user.save();
+        }).then(() => {
+            response.sendStatus(201);
+        }).catch((reason: string) => {
+            response.status(400).json({message: reason});
+        });
+    } 
 });
 
 /*
