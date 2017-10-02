@@ -4,7 +4,8 @@ import { TodoService, Todo } from '../shared/services/todo.service';
 import { ContactService, User } from '../shared/services/contact.service';
 import { UserService } from '../shared/services/user.service';
 import { User_TodoService, User_Todo } from '../shared/services/user_todo.service';
-import { NgIf, NgFor } from '@angular/common'
+import { NgIf, NgFor } from '@angular/common';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-todo-list',
@@ -19,16 +20,13 @@ export class TodoListComponent implements OnInit {
   contactList: User[] = [];
   me: User;
   user_todo: User_Todo = {todoId: '', userId: ''};
-  notification = { error: '' };
 
-
-  constructor(private router: Router, public todoService: TodoService, public contactService: ContactService, public userService: UserService, public user_todoService: User_TodoService) { 
+  constructor(private router: Router, public todoService: TodoService, public contactService: ContactService, public userService: UserService, public user_todoService: User_TodoService, public snackBar: MdSnackBar) { 
 
   }
   
 
     ngOnInit() {
-      this.notification.error = '';
       this.loadMe();
       this.loadTodos();
       this.loadContacts();
@@ -36,43 +34,49 @@ export class TodoListComponent implements OnInit {
   
     loadTodos() {
       this.todoService.getTodos().subscribe(
-        todos => { this.todos = todos;
+        todos => { 
+          this.todos = todos;
                     todos.forEach(todo => {
                       todo.owner = this.me.userId;
                     }); 
                   },
-        error => { this.notification.error = error; }
+                  error => { this.snackBar.open(error, 'Schließen', {
+                    duration: 5000,
+                  }); }
       );
     }
 
     removeTodo(todoId: string) {
-      this.notification.error = '';
       this.todoService.removeTodo(todoId).subscribe(
         data => { 
           this.router.navigateByUrl('todo/index'); 
           this.loadTodos();      
         },
-        error => { this.notification.error = error; }
+        error => { this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        }); }
       );
     }
 
     loadContacts(){
       this.contactService.getContacts().subscribe(
         data => {this.contactList = data; },
-        error => {this.notification.error = error}
+        error => { this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        }); }
       );
     }
 
     loadMe(){
       this.userService.getMe().subscribe(
         data => {this.me = data; },
-        error => {this.notification.error = error}
+        error => { this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        }); }
       );
     }
 
     update(){
-    this.notification.error = ''; 
-    
     this.todos.forEach(todo => {
       if (todo.owner != this.me.userId){
         this.user_todo.todoId = todo.id
@@ -83,7 +87,9 @@ export class TodoListComponent implements OnInit {
                       todo.owner = this.me.userId;
                     }); 
                   },
-          error => { this.notification.error = error; }
+                  error => { this.snackBar.open(error, 'Schließen', {
+                    duration: 5000,
+                  }); }
         );
       }
     });

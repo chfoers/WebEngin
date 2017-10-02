@@ -85,7 +85,7 @@ router.get('/index/todo', (request, response) => {
             });
             response.status(200).json({ data: foundTodos });
         }).catch((reason) => {
-            response.status(404).json({ message: 'Todo existiert nicht' });
+            response.status(400).json({ message: 'Todo existiert nicht' });
         });
     }
     else {

@@ -13,7 +13,7 @@ exports.AuthorisationService = {
     },
     authentificationMiddleware: (request, response, next) => {
         if (!request.jwtClaimSet) {
-            response.status(401).json({ message: 'You need to login.' });
+            response.status(400).json({ message: 'Kein User eingeloggt' });
         }
         else {
             next();
@@ -26,7 +26,7 @@ exports.AuthorisationService = {
         return new Promise((resolve, reject) => {
             bcrypt.compare(password, user.password, (err, isValid) => {
                 if (err) {
-                    reject('Password is wrong.');
+                    reject('Falsches Password');
                 }
                 else {
                     resolve(isValid);
@@ -38,7 +38,7 @@ exports.AuthorisationService = {
         return new Promise((resolve, reject) => {
             bcrypt.hash(password + '', 8, (err, hash) => {
                 if (err) {
-                    reject('Could not hash password.');
+                    reject('Passwort konnte nicht gehasht werden');
                 }
                 else {
                     user.password = hash;
@@ -53,7 +53,7 @@ exports.AuthorisationService = {
                 name: user.name, email: user.email };
             jwt.sign(jwtClaimSet, config_1.default.authentification.secret, { algorithm: 'HS256' }, (err, token) => {
                 if (err) {
-                    reject('Could not create jwtToken.');
+                    reject('Token konnte nicht erstellt werden');
                 }
                 else {
                     response.cookie(config_1.default.authentification.cookieName, token);

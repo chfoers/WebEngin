@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ContactService, User } from '../shared/services/contact.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-contact-list',
@@ -9,30 +10,31 @@ import { ContactService, User } from '../shared/services/contact.service';
 })
 export class ContactListComponent implements OnInit {
   contactList: User[] = [];
-  notification = { error: '' };
 
-  constructor(private router: Router, public contactService: ContactService) { }
+  constructor(private router: Router, public contactService: ContactService, public snackBar: MdSnackBar) { }
 
   ngOnInit() {
-      this.notification.error = '';
       this.loadContacts();
   }
  
   loadContacts(){
     this.contactService.getContacts().subscribe(
       data => {this.contactList = data;},
-      error => {this.notification.error = error}
+      error => { this.snackBar.open(error, 'Schließen', {
+        duration: 5000,
+      }); }
     );
   }
 
   removeContact(contactId: string) {
-    this.notification.error = '';
     this.contactService.removeContact(contactId).subscribe(
       data => { 
         this.router.navigateByUrl('contact/index');  
         this.loadContacts(); 
       },
-      error => { this.notification.error = error; }
+      error => { this.snackBar.open(error, 'Schließen', {
+        duration: 5000,
+      }); }
     );
    
   }

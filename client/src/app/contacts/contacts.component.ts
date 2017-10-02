@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ContactService, Contact } from '../shared/services/contact.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-contacts',
@@ -8,12 +9,11 @@ import { ContactService, Contact } from '../shared/services/contact.service';
   styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
-  notification = { error: '' };
   contact: Contact = { ownerId: '', contactId: '', name: '', email: ''};
   isNew = true;
 
 
-  constructor(private router: Router, private route: ActivatedRoute,  public contactService: ContactService) { 
+  constructor(private router: Router, private route: ActivatedRoute,  public contactService: ContactService, public snackBar: MdSnackBar) { 
     
   }
 
@@ -27,7 +27,6 @@ export class ContactsComponent implements OnInit {
   }
 
   loadContact() {
-    this.notification.error = '';
     if(this.contact.contactId != 'newContact'){
       this.isNew = false;
       this.contactService.getContact(this.contact.contactId).subscribe(
@@ -35,7 +34,9 @@ export class ContactsComponent implements OnInit {
           this.contact.email = answer[0].email;
           this.contact.name = answer[0].name;
         },
-        error => { this.notification.error = error; }
+        error => { this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        }); }
       );
     } else {
       this.isNew = true;
@@ -43,18 +44,20 @@ export class ContactsComponent implements OnInit {
   }
 
  addContact() {
-    this.notification.error = '';
     this.contactService.addContact(this.contact.email).subscribe(
       data => { this.router.navigateByUrl('contact/index');  },
-      error => { this.notification.error = error; }
+      error => { this.snackBar.open(error, 'Schließen', {
+        duration: 5000,
+      }); }
     );
   }
 
   removeContact() {
-    this.notification.error = '';
     this.contactService.removeContact(this.contact.contactId).subscribe(
       data => { this.router.navigateByUrl('contact/index'); },
-      error => { this.notification.error = error; }
+      error => { this.snackBar.open(error, 'Schließen', {
+        duration: 5000,
+      }); }
     );
   }
 }
