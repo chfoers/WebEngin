@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService, AuthorisationData } from '../shared/services/user.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -9,15 +10,15 @@ import { UserService, AuthorisationData } from '../shared/services/user.service'
 })
 export class LoginComponent {
   authorisationData: AuthorisationData = { email: '', password: '' }
-  notification = { error: ''};
 
-  constructor(private router: Router, private userService: UserService) {}
+  constructor(private router: Router, private userService: UserService, public snackBar: MdSnackBar) {}
 
   login() {
-    this.notification.error = ''; 
     this.userService.login(this.authorisationData).subscribe(
       data => { this.router.navigateByUrl('todo/index'); },
-      error => { this.notification.error = error; }
+      error => { this.snackBar.open(error, 'Schließen', {
+        duration: 5000,
+      }); }
     );
   }
 }

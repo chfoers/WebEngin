@@ -13,7 +13,7 @@ import { User_TodoService } from './shared/services/user_todo.service';
 import { TodoService } from './shared/services/todo.service';
 import { ContactService} from './shared/services/contact.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize } from '@angular/material';
+import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize, MdSnackBarModule } from '@angular/material';
 import { MatGridListModule} from '@angular/material';
 import { MatSelectModule} from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
@@ -48,6 +48,7 @@ import { ContactListComponent } from './contact-list/contact-list.component';
     MdInputModule,
     MatGridListModule,
     MatSelectModule,
+    MdSnackBarModule,
     FormsModule,
     HttpModule
   ],

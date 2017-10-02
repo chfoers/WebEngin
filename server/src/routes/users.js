@@ -23,7 +23,7 @@ router.post('/login', (request, response) => {
             return authorisationService_1.AuthorisationService.setTokenForUser(response, user);
         }
         else {
-            return Promise.reject('Invalid email or password.');
+            return Promise.reject('Email oder Password ungültig');
         }
     }).then(() => {
         response.sendStatus(201);
@@ -44,12 +44,11 @@ router.post('/registration', (request, response, next) => {
     user.name = uD.name;
     user.email = uD.email;
     if (uD.password !== uD.password2) {
-        response.status(407).json({ message: 'password does not match password confirmation!' });
-        return;
+        response.status(400).json({ message: 'Password und Password wiederholen müssen gleich sein' });
     }
     user_1.User.findOne({ email: user.email }).exec().then((existingUser) => {
         if (existingUser) {
-            return Promise.reject('A user with this email already exists');
+            return Promise.reject('Email-Adresse ist bereits vergeben');
         }
         else {
             return authorisationService_1.AuthorisationService.setHashedPassword(user, uD.password);
@@ -59,6 +58,7 @@ router.post('/registration', (request, response, next) => {
     }).then(() => {
         response.sendStatus(201);
     }).catch((reason) => {
+        console.log(reason);
         response.status(400).json({ message: reason });
     });
 });

@@ -23,7 +23,7 @@ const errors = [];
             if (isValid) {
                 return AuthorisationService.setTokenForUser(response, user);
             } else {
-                return Promise.reject('Invalid email or password.');
+                return Promise.reject('Email oder Password ungültig');
             }
 	}).then(() => {
             response.sendStatus(201);
@@ -48,13 +48,12 @@ router.post('/registration', (request: Request, response: Response, next: NextFu
     
 
     if (uD.password !== uD.password2) {
-        response.status(407).json({message: 'password does not match password confirmation!'});
-        return;
+        response.status(400).json({message: 'Password und Password wiederholen müssen gleich sein'});
     }
 
     User.findOne({ email: user.email }).exec().then((existingUser: UserInterface) => {
         if (existingUser) {
-            return Promise.reject('A user with this email already exists');
+            return Promise.reject('Email-Adresse ist bereits vergeben');
         } else {
             return AuthorisationService.setHashedPassword(user, uD.password);
         }
@@ -63,6 +62,7 @@ router.post('/registration', (request: Request, response: Response, next: NextFu
     }).then(() => {
         response.sendStatus(201);
     }).catch((reason: string) => {
+        console.log(reason);
         response.status(400).json({message: reason});
     });
 });
