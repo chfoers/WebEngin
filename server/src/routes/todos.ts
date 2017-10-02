@@ -53,48 +53,6 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
     });
 });
 
-// Aufgabe zuweisen
-router.post('/todoToUser', (request: Request & JwtClaimSetHolder, response: Response) => {
-    const ids = request.body;
-    const errors = [];
-    var currentUserId: string = '';
-
-    if (request.jwtClaimSet != null){
-        currentUserId = request.jwtClaimSet.userId;
-    }
-
-    Contact.findOne({ ownerId: currentUserId, contactId: ids.userId }).exec().then((contact: ContactInterface) => {
-        if (!contact) {
-            return Promise.reject('No contact found.');
-        } else {
-            return User_Todo.findOne({ userId: currentUserId, todoId: ids.todoId }).exec();
-        }
-    }).then((user_todo: User_TodoInterface) => {
-        if (!user_todo) {
-            return Promise.reject('User does not own todo.');
-        } else {
-            return User_Todo.findOne({ userId: ids.userId, todoId: ids.todoId }).exec();
-        }
-    }).then((user_todo: User_TodoInterface) => {
-        if (!user_todo) {
-            return Promise.resolve();
-        } else {     
-            return Promise.reject('Todo already exists.');
-        }
-    }).then(() => {
-        const user_todoObject = new User_Todo({
-            userId: ids.userId,
-            todoId: ids.todoId
-        });
-        const user_todo = new User_Todo(user_todoObject);
-        user_todo.save();
-        response.sendStatus(201);
-    })
-    .catch((reason: string) => {
-        response.status(400).json({message: reason});
-    });
-});
-
 // Aufgabe ändern
 router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];
@@ -119,7 +77,6 @@ router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Res
     });
 });
     
-
 // Alle Aufgaben eines Users anzeigen
 router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];

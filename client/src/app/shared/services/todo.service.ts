@@ -53,12 +53,6 @@ getTodo(todoId: string): Observable<Todo> {
   .catch(this.handleError);
 }
 
-todoToUser(user_todo: User_Todo): Observable<Todo> {
-  return this.http.post(this.baseURL + '/todos/todoToUser/', user_todo, this.options)
-    .map((response: Response) => response.json().data )
-  .catch(this.handleError);
-}
-
 private handleError(error: Response | any) {
   return Observable.throw(error.json().message)
 }
