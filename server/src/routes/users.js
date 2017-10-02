@@ -58,7 +58,6 @@ router.post('/registration', (request, response, next) => {
     }).then(() => {
         response.sendStatus(201);
     }).catch((reason) => {
-        console.log(reason);
         response.status(400).json({ message: reason });
     });
 });

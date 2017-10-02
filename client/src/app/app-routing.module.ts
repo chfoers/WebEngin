@@ -8,7 +8,6 @@ import { TodoComponent } from './todo/todo.component';
 import { TodoListComponent} from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
-import { TestComponent } from './test/test.component';
 
 const routes = [
       { path: '', component: LoginComponent },
@@ -18,7 +17,6 @@ const routes = [
       { path: 'todo/index', component: TodoListComponent },
       { path: 'contact/contactId/:contactId', component: ContactsComponent},
       { path: 'contact/index', component: ContactListComponent},
-      { path: 'a', component: TestComponent}
 ];
 
 @NgModule({
