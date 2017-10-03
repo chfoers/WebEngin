@@ -1,4 +1,12 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const mongoose = require("mongoose");
@@ -11,6 +19,20 @@ const contacts_1 = require("./routes/contacts");
 const user_todos_1 = require("./routes/user_todos");
 const config_1 = require("./config");
 const authorisationService_1 = require("./services/authorisationService");
+const selenium_webdriver_1 = require("selenium-webdriver");
+selenium_webdriver_1.promise.USE_PROMISE_MANAGER = false;
+function LoginTest() {
+    return __awaiter(this, void 0, void 0, function* () {
+        const driver = yield new selenium_webdriver_1.Builder().forBrowser(selenium_webdriver_1.Browser.CHROME).build();
+        yield driver.get('http://localhost:8080/users/login');
+        yield driver.findElement(selenium_webdriver_1.By.name('email')).sendKeys('max.mustermann@gmail.com');
+        yield driver.findElement(selenium_webdriver_1.By.name('password')).sendKeys('supsersecret');
+        yield driver.findElement(selenium_webdriver_1.By.css('.btn.btn-default')).click();
+        yield driver.wait(selenium_webdriver_1.until.elementLocated(selenium_webdriver_1.By.className('alert')), 1000);
+        yield driver.quit();
+    });
+}
+LoginTest();
 function startServer() {
     const app = express();
     app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
