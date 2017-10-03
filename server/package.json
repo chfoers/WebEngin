@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "tsc && jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "istanbul": "istanbul cover -x '**/*.spec.js' jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "remap-istanbul": "remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html",
+    "cover": "tsc && npm run istanbul && npm run remap-istanbul"
+    
   },
   "keywords": [],
   "author": "",
@@ -34,6 +38,12 @@
   },
   "devDependencies": {
     "@types/faker": "^4.1.1",
-    "faker": "^4.1.0"
+    "@types/jasmine": "^2.6.0",
+    "faker": "^4.1.0",
+    "jasmine": "^2.8.0",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0"
   }
 }
