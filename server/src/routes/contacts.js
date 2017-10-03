@@ -115,7 +115,7 @@ router.post('/contact', (request, response, next) => {
         .exec()
         .then((contactUser) => {
         if (!contactUser) {
-            return Promise.reject('User gibts nicht mit dieser Email');
+            return Promise.reject('User mit dieser Email gibt es nicht');
         }
         else {
             const params = [{ ownerId: userId },

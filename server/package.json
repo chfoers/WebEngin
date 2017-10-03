@@ -32,6 +32,8 @@
   },
   "devDependencies": {
     "@types/faker": "^4.1.1",
-    "faker": "^4.1.0"
+    "@types/jasmine": "^2.6.0",
+    "faker": "^4.1.0",
+    "jasmine": "^2.8.0"
   }
 }
