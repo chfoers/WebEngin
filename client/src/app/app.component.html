@@ -11,7 +11,7 @@
   <button *ngIf=authenticated() routerLink="contact/index" md-button aria-label="Kontakte">
         Kontakte
       </button>
-  <button *ngIf=authenticated() routerLink="/logout" md-button aria-label="Logout">
+  <button *ngIf=authenticated() (click)="logout()" md-button aria-label="Logout">
         Logout
       </button>
 </md-card>

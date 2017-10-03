@@ -3,7 +3,7 @@ const ValidationService = {
         let hasErrors = false;
         requiredFields.forEach(fieldName => {
             if (!object[fieldName]) {
-                errors.push(fieldName + ' can not be blank');
+                errors.push("Feld " + fieldName + ' darf nicht leer sein');
                 hasErrors = true;
             }
         })

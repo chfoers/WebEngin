@@ -49,8 +49,10 @@ exports.AuthorisationService = {
     },
     setTokenForUser: (response, user) => {
         return new Promise((resolve, reject) => {
-            const jwtClaimSet = { userId: user.userId,
-                name: user.name, email: user.email };
+            const jwtClaimSet = {
+                userId: user.userId,
+                name: user.name, email: user.email
+            };
             jwt.sign(jwtClaimSet, config_1.default.authentification.secret, { algorithm: 'HS256' }, (err, token) => {
                 if (err) {
                     reject('Token konnte nicht erstellt werden');

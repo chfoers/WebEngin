@@ -36,11 +36,11 @@ router.put('/update', (request, response) => {
                 response.status(200).json({ data: foundTodos });
             })
                 .catch((reason) => {
-                response.status(400).json({ message: reason });
+                response.status(400).json({ message: 'Das Todo konnte dem User nicht zugeordnet werden' });
             });
         })
             .catch((reason) => {
-            response.status(400).json({ message: reason });
+            response.status(400).json({ message: 'Kein User eingeloggt' });
         });
     }
 });

@@ -23,13 +23,13 @@ router.put('/update', (request: Request & JwtClaimSetHolder, response: Response)
     var currentId: string = '';
     const data = request.body;
 
-    
-    if (request.jwtClaimSet != null){
+
+    if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId
 
         // Change the userId of a Todo
         User_Todo.update(
-            { "userId" : currentId, "todoId" :  data.todoId},
+            { "userId": currentId, "todoId": data.todoId },
             {
                 $set: { "userId": data.userId, "todoId": data.todoId },
             }
@@ -52,14 +52,14 @@ router.put('/update', (request: Request & JwtClaimSetHolder, response: Response)
                     response.status(200).json({ data: foundTodos }); 
             })
             .catch((reason: string) => {
-                response.status(400).json({ message: reason });
+                response.status(400).json({ message: 'Das Todo konnte dem User nicht zugeordnet werden' });
             }); 
         })
         .catch((reason: string) => {
-            response.status(400).json({message: reason});
+            response.status(400).json({message:'Kein User eingeloggt' });
         });
     }
-    
+
 });
 
 
