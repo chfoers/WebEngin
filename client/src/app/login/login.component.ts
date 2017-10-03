@@ -10,7 +10,7 @@ import { MdSnackBar } from '@angular/material';
 })
 export class LoginComponent {
   // Enthält die Login-Daten des Users
-  authorisationData: AuthorisationData = { email: '', password: '' }
+  authorisationData: AuthorisationData = { email: '', password: '' };
 
   constructor(private router: Router, private userService: UserService, public snackBar: MdSnackBar) { }
 

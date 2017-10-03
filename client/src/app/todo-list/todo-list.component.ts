@@ -23,7 +23,9 @@ export class TodoListComponent implements OnInit {
   // Zuletzt bearbeitetes user_todo-Objekt
   user_todo: User_Todo = { todoId: '', userId: '' };
 
-  constructor(private router: Router, public todoService: TodoService, public contactService: ContactService, public userService: UserService, public user_todoService: User_TodoService, public snackBar: MdSnackBar) { }
+  constructor(private router: Router, public todoService: TodoService,
+   public contactService: ContactService, public userService: UserService,
+   public user_todoService: User_TodoService, public snackBar: MdSnackBar) { }
 
   ngOnInit() {
     this.loadMe();
@@ -90,9 +92,9 @@ export class TodoListComponent implements OnInit {
   // Methode zum Updaten eines user_todo-Objektes, wird verwendet um Aufgabe einem anderem User zuzuweisen
   update() {
     this.todos.forEach(todo => {
-      if (todo.owner != this.me.userId) {
-        this.user_todo.todoId = todo.id
-        this.user_todo.userId = todo.owner
+      if (todo.owner !== this.me.userId) {
+        this.user_todo.todoId = todo.id;
+        this.user_todo.userId = todo.owner;
         this.user_todoService.updateUserTodo(this.user_todo).subscribe(
           todos => {
             this.todos = todos;

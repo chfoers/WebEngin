@@ -27,7 +27,7 @@ export class ContactsComponent implements OnInit {
 
   // Methode zum Laden eines Kontakts anhand der contactId
   loadContact() {
-    if (this.contact.contactId != 'newContact') {
+    if (this.contact.contactId !== 'newContact') {
       this.isNew = false;
       this.contactService.getContact(this.contact.contactId).subscribe(
         answer => {
