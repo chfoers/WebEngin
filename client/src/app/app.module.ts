@@ -53,12 +53,13 @@ import { MdSnackBar } from '@angular/material';
   bootstrap: [AppComponent]
 })
 export class AppModule {
-  webSocket: WebSocket;
+
 
   constructor(public snackBar: MdSnackBar) {
     
-    this.webSocket = new WebSocket('ws://localhost:8081');
   } 
+
+  
 
   
 }
