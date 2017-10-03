@@ -10,7 +10,7 @@ import { MdSnackBar } from '@angular/material';
 })
 export class TodoComponent {
   // Einzelnes Todo, das hinzugefügt werden soll
-  todo: Todo = { title: '', text: '', id: '', owner: '' }
+  todo: Todo = { title: '', text: '', id: '', owner: '' };
   // Handelt es sich bei dem Todo in todo um ein neues Todo
   isNew = true;
 
@@ -27,7 +27,7 @@ export class TodoComponent {
 
   // Methode zum Laden eines Todos anhand der todoId
   loadTodo() {
-    if (this.todo.id != 'newTodo') {
+    if (this.todo.id !== 'newTodo') {
       this.isNew = false;
       this.todoService.getTodo(this.todo.id).subscribe(
         answer => {
@@ -63,7 +63,7 @@ export class TodoComponent {
       data => {
         answer => {
           this.todo = answer;
-        }
+        };
         this.router.navigateByUrl('todo/index');
       },
       error => {

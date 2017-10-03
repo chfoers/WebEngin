@@ -28,7 +28,7 @@ export class UserService {
 
   // Prüft, ob ein User angemeldet ist, verwendet dafür das jwtToken
   isAuthenthicated() {
-    if (Cookie.get('jwtToken') == '') {
+    if (Cookie.get('jwtToken') === '') {
       return false;
     } else {
       return true;
@@ -62,6 +62,6 @@ export class UserService {
 
   // Methode zum Error-Handling
   private handleError(error: Response | any) {
-    return Observable.throw(error.json().message)
+    return Observable.throw(error.json().message);
   }
 }

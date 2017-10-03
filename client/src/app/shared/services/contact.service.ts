@@ -49,6 +49,6 @@ export class ContactService {
 
   // Methode zum Error-Handling
   private handleError(error: Response | any) {
-    return Observable.throw(error.json().message)
+    return Observable.throw(error.json().message);
   }
 }
