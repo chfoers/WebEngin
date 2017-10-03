@@ -10,6 +10,7 @@ import { UserService } from './shared/services/user.service';
 import { User_TodoService } from './shared/services/user_todo.service';
 import { TodoService } from './shared/services/todo.service';
 import { ContactService } from './shared/services/contact.service';
+import { WebsocketService } from './shared/services/websocket.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule,
  MdTextareaAutosize, MdSnackBarModule } from '@angular/material';
@@ -48,17 +49,8 @@ import { MdSnackBar } from '@angular/material';
     FormsModule,
     HttpModule
   ],
-  providers: [UserService, TodoService, ContactService, User_TodoService],
+  providers: [UserService, TodoService, ContactService, User_TodoService, WebsocketService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
-
-
-  constructor(public snackBar: MdSnackBar) {
-    
-  } 
-
-  
-
-  
 }

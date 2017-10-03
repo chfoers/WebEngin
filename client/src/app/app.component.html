@@ -15,13 +15,8 @@
         Logout
       </button>
 </md-card>
-<input id="message" type="text">
-<button onclick="sendMessage()">Senden</button>
-<div id="messages"></div>
-  
-<button (click)="openSnackBar('test1','test2')" md-mini-fab> 
-  <md-icon class="md-24">build</md-icon>
-</button>
-
 <p></p>
 <router-outlet></router-outlet>
+<input [(ngModel)]=messageToServer mdInput  id="message" name="message" >
+<button (click)="sendMessage()">Senden</button>
+<div id="messages"></div>
