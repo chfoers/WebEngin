@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && jasmine JASMINE_CONFIG_PATH=jasmine.json"
+    "test": "tsc && jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "istanbul": "istanbul cover -x '**/*.spec.js' jasmine JASMINE_CONFIG_PATH=jasmine.json",
+    "remap-istanbul": "remap-istanbul -i ./coverage/coverage.json -o ./coverage/html-report -t html",
+    "cover": "tsc && npm run istanbul && npm run remap-istanbul"
+    
   },
   "keywords": [],
   "author": "",
