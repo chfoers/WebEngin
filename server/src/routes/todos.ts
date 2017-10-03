@@ -25,7 +25,7 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
     currentUserId = '';
 
     // Prüfen, ob ein User angemeldet ist
-    if (request.jwtClaimSet != null){
+    if (request.jwtClaimSet != null) {
         currentUserId = request.jwtClaimSet.userId;
     }
 
@@ -36,7 +36,7 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
     }
 
     // Suchen des Users anhand der Id
-    User.findOne({ userId: currentUserId}).exec().then((user: UserInterface) => {
+    User.findOne({ userId: currentUserId }).exec().then((user: UserInterface) => {
         if (!user) {
             return Promise.reject('Kein User eingeloggt');
         } else {
@@ -53,12 +53,12 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
             return Promise.all([user_todo.save(), todo.save()]);
         }
     })
-    .then(() => {
-        response.sendStatus(201);
-    })
-    .catch((reason: string) => {
-        response.status(400).json({message: reason});
-    });
+        .then(() => {
+            response.sendStatus(201);
+        })
+        .catch((reason: string) => {
+            response.status(400).json({ message: reason });
+        });
 });
 
 // Aufgabe ändern
@@ -73,58 +73,58 @@ router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Res
         response.status(400).json({ message: errors.join(' & ') });
         return;
     }
-    
+
     // Prüfen, ob User eingeloggt ist
-    if (request.jwtClaimSet != null){
+    if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
 
         // Updaten des Todos
         Todo.update(
-            { "todoId" : currentTodoId },
+            { "todoId": currentTodoId },
             {
-              $set: { "todoTitle": todoData.title, "todoText": todoData.text },
+                $set: { "todoTitle": todoData.title, "todoText": todoData.text },
             }
         )
-        .then(() => {
-            response.sendStatus(201);
-        })
-        .catch((reason: string) => {
-            response.status(400).json({message: "Todo existiert nicht"});
-        });
+            .then(() => {
+                response.sendStatus(201);
+            })
+            .catch((reason: string) => {
+                response.status(400).json({ message: "Todo existiert nicht" });
+            });
     } else {
-        response.status(400).json({message: "Kein User eingeloggt"});
+        response.status(400).json({ message: "Kein User eingeloggt" });
     }
 });
-    
+
 // Alle Aufgaben eines Users anzeigen
 router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const errors = [];
     var currentId: string = '';
 
     // Prüfen, ob User angemeldet ist
-    if (request.jwtClaimSet != null){
+    if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
 
         // Suchen der Todos
         User_Todo.aggregate([
-            {$unwind: "$todoId"}, 
-            {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
-            {$match: {"userId" : currentId}}
+            { $unwind: "$todoId" },
+            { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
+            { $match: { "userId": currentId } }
         ])
-        .exec().then((todos:  QueryResultType[]) => {
-                        const foundTodos = todos.map(todo => {                 
-                            return {                         
-                                id: todo.oneTodo[0].todoId,
-                                title: todo.oneTodo[0].todoTitle,
-                                text: todo.oneTodo[0].todoText
-                            };
-                        });
-                        response.status(200).json({ data: foundTodos }); 
-                    }).catch((reason: string) => {
-                        response.status(400).json({ message: 'Todo existiert nicht' });
-                    }); 
+            .exec().then((todos: QueryResultType[]) => {
+                const foundTodos = todos.map(todo => {
+                    return {
+                        id: todo.oneTodo[0].todoId,
+                        title: todo.oneTodo[0].todoTitle,
+                        text: todo.oneTodo[0].todoText
+                    };
+                });
+                response.status(200).json({ data: foundTodos });
+            }).catch((reason: string) => {
+                response.status(400).json({ message: 'Todo existiert nicht' });
+            });
     } else {
-        response.status(400).json({message: "Kein User eingeloggt"});
+        response.status(400).json({ message: "Kein User eingeloggt" });
     }
 });
 
@@ -135,31 +135,31 @@ router.get('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Res
     var currentTodoId = request.params['todoId'];
 
     // Prüfen, ob User angemeldet ist
-    if (request.jwtClaimSet != null){
+    if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
 
         // Suchen des Todos anhand der Id
         User_Todo.aggregate([
-            {$unwind: "$todoId"}, 
-            {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
-            {$match: {"userId" : currentId, "todoId": currentTodoId}}
+            { $unwind: "$todoId" },
+            { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
+            { $match: { "userId": currentId, "todoId": currentTodoId } }
         ])
-        .exec().then((todos:  QueryResultType[]) => {
-                        const foundTodos = todos.map(todo => {                   
-                            return {
-                                todoId: todo.oneTodo[0].todoId,
-                                title: todo.oneTodo[0].todoTitle,
-                                text: todo.oneTodo[0].todoText
-                            };
-                        }); 
-                        response.status(200).json({ data: foundTodos[0] }); 
-                    }).catch((reason: string) => {
-                        response.status(400).json({ message: 'Fehler beim Laden der Todos' });
-                    }); 
+            .exec().then((todos: QueryResultType[]) => {
+                const foundTodos = todos.map(todo => {
+                    return {
+                        todoId: todo.oneTodo[0].todoId,
+                        title: todo.oneTodo[0].todoTitle,
+                        text: todo.oneTodo[0].todoText
+                    };
+                });
+                response.status(200).json({ data: foundTodos[0] });
+            }).catch((reason: string) => {
+                response.status(400).json({ message: 'Fehler beim Laden der Todos' });
+            });
     } else {
-        response.status(400).json({message: "Kein User eingeloggt"});
+        response.status(400).json({ message: "Kein User eingeloggt" });
     }
-    
+
 });
 
 // Eine Aufgabe löschen
@@ -169,7 +169,7 @@ router.delete('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: 
     var currentTodoId = request.params['todoId'];
 
     // Prüfen, ob User eingeloggt ist
-    if (request.jwtClaimSet != null){
+    if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
         User_Todo.findOne({ userId: currentId, todoId: currentTodoId }).exec().then((user_todo: User_TodoInterface) => {
             if (!user_todo) {
@@ -178,19 +178,19 @@ router.delete('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: 
                 return User_Todo.remove({ todoId: currentTodoId }).exec();
             }
         })
-        .then(() => {
-            // Löschen des Todos
-            return Todo.remove({todoId: currentTodoId}).exec();
-        })
-        .then(() => {
-            response.status(200).json({ }); 
-        })
-        .catch((reason: string) => {
-            response.status(400).json({ message: 'Todo existiert nicht' });
-        }); 
+            .then(() => {
+                // Löschen des Todos
+                return Todo.remove({ todoId: currentTodoId }).exec();
+            })
+            .then(() => {
+                response.status(200).json({});
+            })
+            .catch((reason: string) => {
+                response.status(400).json({ message: 'Todo existiert nicht' });
+            });
     } else {
-        response.status(400).json({message: "Kein User eingeloggt"});
-    }   
+        response.status(400).json({ message: "Kein User eingeloggt" });
+    }
 });
 
 export default router;

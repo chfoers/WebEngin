@@ -15,8 +15,8 @@ export interface JwtClaimSetHolder {
 }
 
 export const AuthorisationService = {
-	
-	jwtValidationMiddleware: (request: Request & JwtClaimSetHolder, 
+
+	jwtValidationMiddleware: (request: Request & JwtClaimSetHolder,
 		response: Response, next: NextFunction) => {
 		const token = request.cookies[config.authentification.cookieName] || '';
 		jwt.verify(token, config.authentification.secret, (err: Error, claimSet: any) => {
@@ -25,10 +25,10 @@ export const AuthorisationService = {
 		});
 	},
 
-	authentificationMiddleware: (request: Request & JwtClaimSetHolder, 
+	authentificationMiddleware: (request: Request & JwtClaimSetHolder,
 		response: Response, next: NextFunction) => {
 		if (!request.jwtClaimSet) {
-			response.status(400).json({message: 'Kein User eingeloggt'});
+			response.status(400).json({ message: 'Kein User eingeloggt' });
 		} else {
 			next();
 		}
@@ -40,9 +40,9 @@ export const AuthorisationService = {
 
 	checkPassword: (password: string, user: UserInterface): Promise<boolean> => {
 		return new Promise<boolean>((resolve, reject) => {
-		bcrypt.compare(password, user.password, (err: Error,
-		isValid: boolean) => {
-				if (err){
+			bcrypt.compare(password, user.password, (err: Error,
+				isValid: boolean) => {
+				if (err) {
 					reject('Falsches Password');
 				} else {
 					resolve(isValid);
@@ -52,9 +52,9 @@ export const AuthorisationService = {
 	},
 
 	setHashedPassword: (user: UserInterface, password: string): Promise<UserInterface> => {
-        return new Promise<UserInterface>((resolve, reject) => {
-		bcrypt.hash(password+'', 8, (err: Error, hash: string) => {
-				if(err) {
+		return new Promise<UserInterface>((resolve, reject) => {
+			bcrypt.hash(password + '', 8, (err: Error, hash: string) => {
+				if (err) {
 					reject('Passwort konnte nicht gehasht werden');
 				} else {
 					user.password = hash;
@@ -66,20 +66,22 @@ export const AuthorisationService = {
 
 	setTokenForUser: (response: Response, user: UserInterface) => {
 		return new Promise((resolve, reject) => {
-			const jwtClaimSet: JwtClaimSet = {userId: user.userId,
-			name: user.name, email: user.email }
+			const jwtClaimSet: JwtClaimSet = {
+				userId: user.userId,
+				name: user.name, email: user.email
+			}
 			jwt.sign(jwtClaimSet, config.authentification.secret, { algorithm: 'HS256' },
 				(err: Error, token: string) => {
-				if (err) {
-					reject('Token konnte nicht erstellt werden')
-				} else {
-					response.cookie(config.authentification.cookieName, token);
-					resolve();
-				}
-			});
+					if (err) {
+						reject('Token konnte nicht erstellt werden')
+					} else {
+						response.cookie(config.authentification.cookieName, token);
+						resolve();
+					}
+				});
 		});
 	},
-	
+
 	removeToken: (response: Response) => {
 		response.clearCookie(config.authentification.cookieName);
 	}
