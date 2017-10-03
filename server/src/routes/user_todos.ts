@@ -44,12 +44,12 @@ router.put('/update', (request: Request & JwtClaimSetHolder, response: Response)
                         });
                         response.status(200).json({ data: foundTodos }); 
                     }).catch((reason: string) => {
-                        response.status(400).json({ message: reason });
+                        response.status(400).json({ message: 'Das Todo konnte dem User nicht zugeordnet werden' });
                     }); 
 
         })
         .catch((reason: string) => {
-            response.status(400).json({message: reason});
+            response.status(400).json({message: 'Kein User eingeloggt'});
         });
     }
     
