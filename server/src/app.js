@@ -11,8 +11,13 @@ const contacts_1 = require("./routes/contacts");
 const user_todos_1 = require("./routes/user_todos");
 const config_1 = require("./config");
 const authorisationService_1 = require("./services/authorisationService");
+const http = require("http");
+const WebSocket = require("ws");
 function startServer() {
     const app = express();
+    app.use(express.static('public'));
+    const httpServer = http.createServer(app);
+    httpServer.listen(8081);
     app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
     app.use(cookieParser());
     app.use(bodyParser.json());
@@ -21,6 +26,16 @@ function startServer() {
     app.use('/todos', todos_1.default);
     app.use('/contacts', contacts_1.default);
     app.use('/user_todos', user_todos_1.default);
+    const wss = new WebSocket.Server({ server: httpServer });
+    wss.on('connection', (webSocket) => {
+        webSocket.on('message', (message) => {
+            wss.clients.forEach((ws) => {
+                console.log(message);
+                ws.send(message);
+                //if (ws !== webSocket) { ws.send(message); }
+            });
+        });
+    });
     app.listen(8080, () => {
         console.log('listening on port 8080!');
     });

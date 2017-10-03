@@ -12,6 +12,22 @@
 </head>
 <body>
   <app-root></app-root>
+<input id="message" type="text">
+<button onclick="sendMessage()">Senden</button>
+<div id="messages"></div>
+
+  <script>
+    this.webSocket.onmessage = function(event) {
+      this.snackBar.open(event.data, 'test', {
+        duration: 2000,
+      });
+    };
+
+    function sendMessage() {
+      var message = document.getElementById('message').value;
+      webSocket.send(message);
+    }
+  </script>
 </body>
 </html>
 

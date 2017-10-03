@@ -10,21 +10,37 @@ import contactsRoute from './routes/contacts';
 import user_todosRoute from './routes/user_todos';
 import config from './config';
 import {AuthorisationService } from './services/authorisationService';
+import * as http from 'http';
+import * as WebSocket from 'ws';
 
 function startServer() {
-const app = express();
+    const app = express();
+    app.use(express.static('public'));
+    const httpServer = http.createServer(app);
+    httpServer.listen(8081);
 
-app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
-app.use(cookieParser());
-app.use(bodyParser.json());
-app.use(AuthorisationService.jwtValidationMiddleware);
-app.use('/users', usersRoute);
-app.use('/todos', todosRoute);
-app.use('/contacts', contactsRoute);
-app.use('/user_todos', user_todosRoute);
+    app.use(cors({ origin: 'http://localhost:4200', credentials: true }));
+    app.use(cookieParser());
+    app.use(bodyParser.json());
+    app.use(AuthorisationService.jwtValidationMiddleware);
+    app.use('/users', usersRoute);
+    app.use('/todos', todosRoute);
+    app.use('/contacts', contactsRoute);
+    app.use('/user_todos', user_todosRoute);
 
-app.listen(8080, () => {
-	console.log('listening on port 8080!');
+    const wss = new WebSocket.Server({ server: httpServer });
+    wss.on('connection', (webSocket: WebSocket) => {
+        webSocket.on('message', (message: string) => {
+            wss.clients.forEach((ws: WebSocket) => {
+                console.log(message);
+                ws.send(message); 
+                //if (ws !== webSocket) { ws.send(message); }
+            })
+        });
+    });
+
+    app.listen(8080, () => {
+	    console.log('listening on port 8080!');
 	});
 };
 

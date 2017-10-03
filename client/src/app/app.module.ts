@@ -16,6 +16,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize } from '@angular/material';
 import { MatGridListModule} from '@angular/material';
 import { MatSelectModule} from '@angular/material';
+import { MatSnackBarModule } from '@angular/material';
+import { MdSnackBar } from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
 import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';
@@ -48,10 +50,26 @@ import { ContactListComponent } from './contact-list/contact-list.component';
     MdInputModule,
     MatGridListModule,
     MatSelectModule,
+    MatSnackBarModule,
     FormsModule,
     HttpModule
   ],
   providers: [UserService, TodoService, ContactService, User_TodoService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  webSocket: WebSocket;
+
+  constructor(public snackBar: MdSnackBar) {
+    
+    this.webSocket = new WebSocket('ws://localhost:8081');
+  } 
+
+  
+  
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+}
