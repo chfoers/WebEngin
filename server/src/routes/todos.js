@@ -4,7 +4,7 @@ const express_1 = require("express");
 const todo_1 = require("../models/todo");
 const user_1 = require("../models/user");
 const user_todo_1 = require("../models/user_todo");
-//Validationservice
+const validationService_1 = require("../services/validationService");
 const router = express_1.Router();
 // Aufgabe anlegen
 router.post('/todo', (request, response) => {
@@ -12,9 +12,16 @@ router.post('/todo', (request, response) => {
     const errors = [];
     var currentUserId;
     currentUserId = '';
+    // Prüfen, ob ein User angemeldet ist
     if (request.jwtClaimSet != null) {
         currentUserId = request.jwtClaimSet.userId;
     }
+    // Prüfen, ob alle Felder befüllt sind
+    if (!validationService_1.default.hasRequiredFields(todoData, ['title', 'text'], errors)) {
+        response.status(400).json({ message: errors.join(' & ') });
+        return;
+    }
+    // Suchen des Users anhand der Id
     user_1.User.findOne({ userId: currentUserId }).exec().then((user) => {
         if (!user) {
             return Promise.reject('Kein User eingeloggt');
@@ -29,10 +36,8 @@ router.post('/todo', (request, response) => {
                 todoId: todo.todoId
             });
             const user_todo = new user_todo_1.User_Todo(user_todoObject);
-            user_todo.save().catch((reason) => {
-                response.status(400).json({ message: "Daten entsprechen nicht dem Datenbank-Schema" });
-            });
-            return todo.save();
+            // Abspeichern vom Todo und der Verbindung zum User
+            return Promise.all([user_todo.save(), todo.save()]);
         }
     })
         .then(() => {
@@ -48,8 +53,15 @@ router.put('/todo/:todoId', (request, response) => {
     var currentId = '';
     const todoData = request.body;
     var currentTodoId = request.params['todoId'];
+    // Prüfen, ob alle Felder befüllt sind
+    if (!validationService_1.default.hasRequiredFields(todoData, ['title', 'text'], errors)) {
+        response.status(400).json({ message: errors.join(' & ') });
+        return;
+    }
+    // Prüfen, ob User eingeloggt ist
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
+        // Updaten des Todos
         todo_1.Todo.update({ "todoId": currentTodoId }, {
             $set: { "todoTitle": todoData.title, "todoText": todoData.text },
         })
@@ -68,8 +80,10 @@ router.put('/todo/:todoId', (request, response) => {
 router.get('/index/todo', (request, response) => {
     const errors = [];
     var currentId = '';
+    // Prüfen, ob User angemeldet ist
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
+        // Suchen der Todos
         user_todo_1.User_Todo.aggregate([
             { $unwind: "$todoId" },
             { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
@@ -97,8 +111,10 @@ router.get('/todo/:todoId', (request, response) => {
     const errors = [];
     var currentId = '';
     var currentTodoId = request.params['todoId'];
+    // Prüfen, ob User angemeldet ist
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
+        // Suchen des Todos anhand der Id
         user_todo_1.User_Todo.aggregate([
             { $unwind: "$todoId" },
             { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
@@ -126,6 +142,7 @@ router.delete('/todo/:todoId', (request, response) => {
     const errors = [];
     var currentId = '';
     var currentTodoId = request.params['todoId'];
+    // Prüfen, ob User eingeloggt ist
     if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId;
         user_todo_1.User_Todo.findOne({ userId: currentId, todoId: currentTodoId }).exec().then((user_todo) => {
@@ -137,6 +154,7 @@ router.delete('/todo/:todoId', (request, response) => {
             }
         })
             .then(() => {
+            // Löschen des Todos
             return todo_1.Todo.remove({ todoId: currentTodoId }).exec();
         })
             .then(() => {

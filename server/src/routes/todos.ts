@@ -5,7 +5,7 @@ import { Todo, TodoInterface } from '../models/todo';
 import { User, UserInterface } from '../models/user';
 import { User_Todo, User_TodoInterface } from '../models/user_todo';
 import { Contact, ContactInterface } from '../models/contact';
-//Validationservice
+import validationService from '../services/validationService';
 
 const router = Router();
 
@@ -20,12 +20,22 @@ interface QueryResultType {
 // Aufgabe anlegen
 router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) => {
     const todoData = request.body;
-    const errors = [];
+    const errors: string[] = [];
     var currentUserId: string;
     currentUserId = '';
+
+    // Prüfen, ob ein User angemeldet ist
     if (request.jwtClaimSet != null){
         currentUserId = request.jwtClaimSet.userId;
     }
+
+    // Prüfen, ob alle Felder befüllt sind
+    if (!validationService.hasRequiredFields(todoData, ['title', 'text'], errors)) {
+        response.status(400).json({ message: errors.join(' & ') });
+        return;
+    }
+
+    // Suchen des Users anhand der Id
     User.findOne({ userId: currentUserId}).exec().then((user: UserInterface) => {
         if (!user) {
             return Promise.reject('Kein User eingeloggt');
@@ -39,10 +49,8 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
                 todoId: todo.todoId
             });
             const user_todo = new User_Todo(user_todoObject);
-            user_todo.save().catch((reason: string) => {
-                response.status(400).json({message: "Daten entsprechen nicht dem Datenbank-Schema"});
-            }); 
-            return todo.save();
+            // Abspeichern vom Todo und der Verbindung zum User
+            return Promise.all([user_todo.save(), todo.save()]);
         }
     })
     .then(() => {
@@ -55,14 +63,22 @@ router.post('/todo', (request: Request & JwtClaimSetHolder, response: Response) 
 
 // Aufgabe ändern
 router.put('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Response) => {
-    const errors = [];
+    const errors: string[] = [];
     var currentId: string = '';
     const todoData = request.body;
     var currentTodoId = request.params['todoId'];
+
+    // Prüfen, ob alle Felder befüllt sind
+    if (!validationService.hasRequiredFields(todoData, ['title', 'text'], errors)) {
+        response.status(400).json({ message: errors.join(' & ') });
+        return;
+    }
     
+    // Prüfen, ob User eingeloggt ist
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
 
+        // Updaten des Todos
         Todo.update(
             { "todoId" : currentTodoId },
             {
@@ -85,9 +101,11 @@ router.get('/index/todo', (request: Request & JwtClaimSetHolder, response: Respo
     const errors = [];
     var currentId: string = '';
 
+    // Prüfen, ob User angemeldet ist
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
 
+        // Suchen der Todos
         User_Todo.aggregate([
             {$unwind: "$todoId"}, 
             {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
@@ -116,9 +134,11 @@ router.get('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: Res
     var currentId: string = '';
     var currentTodoId = request.params['todoId'];
 
+    // Prüfen, ob User angemeldet ist
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
 
+        // Suchen des Todos anhand der Id
         User_Todo.aggregate([
             {$unwind: "$todoId"}, 
             {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
@@ -148,9 +168,9 @@ router.delete('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: 
     var currentId: string = '';
     var currentTodoId = request.params['todoId'];
 
+    // Prüfen, ob User eingeloggt ist
     if (request.jwtClaimSet != null){
         currentId = request.jwtClaimSet.userId;
-
         User_Todo.findOne({ userId: currentId, todoId: currentTodoId }).exec().then((user_todo: User_TodoInterface) => {
             if (!user_todo) {
                 return Promise.reject('Kein User eingeloggt');
@@ -159,6 +179,7 @@ router.delete('/todo/:todoId', (request: Request & JwtClaimSetHolder, response: 
             }
         })
         .then(() => {
+            // Löschen des Todos
             return Todo.remove({todoId: currentTodoId}).exec();
         })
         .then(() => {
