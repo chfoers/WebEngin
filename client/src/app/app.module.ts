@@ -10,6 +10,7 @@ import { UserService } from './shared/services/user.service';
 import { User_TodoService } from './shared/services/user_todo.service';
 import { TodoService } from './shared/services/todo.service';
 import { ContactService } from './shared/services/contact.service';
+import { WebsocketService } from './shared/services/websocket.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule,
  MdTextareaAutosize, MdSnackBarModule } from '@angular/material';
@@ -20,6 +21,7 @@ import { TodoComponent } from './todo/todo.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
+import { MdSnackBar } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { ContactListComponent } from './contact-list/contact-list.component';
     FormsModule,
     HttpModule
   ],
-  providers: [UserService, TodoService, ContactService, User_TodoService],
+  providers: [UserService, TodoService, ContactService, User_TodoService, WebsocketService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
