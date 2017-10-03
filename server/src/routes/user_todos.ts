@@ -18,41 +18,41 @@ router.put('/update', (request: Request & JwtClaimSetHolder, response: Response)
     var currentId: string = '';
     const data = request.body;
 
-    
-    if (request.jwtClaimSet != null){
+
+    if (request.jwtClaimSet != null) {
         currentId = request.jwtClaimSet.userId
 
         User_Todo.update(
-            { "userId" : currentId, "todoId" :  data.todoId},
+            { "userId": currentId, "todoId": data.todoId },
             {
                 $set: { "userId": data.userId, "todoId": data.todoId },
             }
         )
-        .then(() => {
-            User_Todo.aggregate([
-                {$unwind: "$todoId"}, 
-                {$lookup: {from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo"}}, 
-                {$match: {"userId" : currentId}}
-            ])
-            .exec().then((todos:  QueryResultType[]) => {
-                        const foundTodos = todos.map(todo => {                 
-                            return {                         
+            .then(() => {
+                User_Todo.aggregate([
+                    { $unwind: "$todoId" },
+                    { $lookup: { from: "todos", localField: "todoId", foreignField: "todoId", as: "oneTodo" } },
+                    { $match: { "userId": currentId } }
+                ])
+                    .exec().then((todos: QueryResultType[]) => {
+                        const foundTodos = todos.map(todo => {
+                            return {
                                 id: todo.oneTodo[0].todoId,
                                 title: todo.oneTodo[0].todoTitle,
                                 text: todo.oneTodo[0].todoText
                             };
                         });
-                        response.status(200).json({ data: foundTodos }); 
+                        response.status(200).json({ data: foundTodos });
                     }).catch((reason: string) => {
                         response.status(400).json({ message: 'Das Todo konnte dem User nicht zugeordnet werden' });
-                    }); 
+                    });
 
-        })
-        .catch((reason: string) => {
-            response.status(400).json({message: 'Kein User eingeloggt'});
-        });
+            })
+            .catch((reason: string) => {
+                response.status(400).json({ message: 'Kein User eingeloggt' });
+            });
     }
-    
+
 });
 
 

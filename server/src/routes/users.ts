@@ -49,7 +49,7 @@ router.delete('/logout', (request: Request, response: Response) => {
 // Sign Up
 router.post('/registration', (request: Request, response: Response, next: NextFunction) => {
     const errors: string[] = [];
-    
+
     const uD = request.body;
     var user = new User();
     user.name = uD.name;
