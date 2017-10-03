@@ -4,11 +4,12 @@
     <form>
         <div layout-gt-xs="row">
             <md-form-field>
-                <input [(ngModel)] = contact.email mdInput type="text" placeholder="Emailadresse" class="form-control" id="contactEmail" name="contactEmail" required>
+                <input [(ngModel)]=contact.email mdInput type="text" placeholder="Emailadresse" class="form-control" id="contactEmail" name="contactEmail"
+                    required>
             </md-form-field>
         </div>
         <p></p>
-        <button *ngIf=isNew  md-raised-button (click)="addContact()" class="btn btn-default">Anlegen</button>
-        <button *ngIf=!isNew  md-raised-button (click)="removeContact()" class="btn btn-default">Löschen</button>
+        <button *ngIf=isNew md-raised-button (click)="addContact()" class="btn btn-default">Anlegen</button>
+        <button *ngIf=!isNew md-raised-button (click)="removeContact()" class="btn btn-default">Löschen</button>
     </form>
 </md-card>

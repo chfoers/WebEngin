@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router'; 
+import { Router } from '@angular/router';
 import { UserService, User } from '../shared/services/user.service';
+import { MdSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-registration',
@@ -8,16 +9,20 @@ import { UserService, User } from '../shared/services/user.service';
   styleUrls: ['./registration.component.scss']
 })
 export class RegistrationComponent {
+  // Einzelner User, der registriert werden soll
   user: User = { userId: '', name: '', email: '', password: '', password2: '' };
-  notification = { error: '' };
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService, public snackBar: MdSnackBar) { }
 
+  // Methode zum registrieren eines Users
   registration() {
-    this.notification.error = ''; 
     this.userService.registration(this.user).subscribe(
       data => { this.router.navigateByUrl(''); },
-      error => { this.notification.error = error; }
+      error => {
+        this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        });
+      }
     );
   }
 }

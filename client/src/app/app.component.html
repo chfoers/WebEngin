@@ -1,19 +1,19 @@
 <md-card>
-  <button routerLink="/" md-button aria-label="Login">
-    Login
-  </button>
-  <button routerLink="/logout" md-button aria-label="Logout">
-    Logout
-  </button>
-  <button routerLink="/registration" md-button aria-label="Registrieren">
-    Registrieren
-  </button>
-  <button routerLink="/todo/index" md-button aria-label="Todos">
-    Todos
-  </button>
-  <button routerLink="contact/index" md-button aria-label="Kontakte">
-    Kontakte
-  </button>
+  <button *ngIf=!authenticated() routerLink="/" md-button aria-label="Login">
+          Login
+        </button>
+  <button *ngIf=!authenticated() routerLink="/registration" md-button aria-label="Registrieren">
+          Registrieren
+        </button>
+  <button *ngIf=authenticated() routerLink="/todo/index" md-button aria-label="Todos">
+        Todos
+      </button>
+  <button *ngIf=authenticated() routerLink="contact/index" md-button aria-label="Kontakte">
+        Kontakte
+      </button>
+  <button *ngIf=authenticated() routerLink="/logout" md-button aria-label="Logout">
+        Logout
+      </button>
 </md-card>
 <input id="message" type="text">
 <button onclick="sendMessage()">Senden</button>

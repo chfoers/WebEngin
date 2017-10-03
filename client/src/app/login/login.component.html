@@ -1,17 +1,19 @@
 <md-card>
-<h1 class="mat-display-1">Login</h1>
-<form (ngSubmit)="login()">
-    <div layout-gt-xs="row">
-        <md-form-field>
-            <input [(ngModel)]=authorisationData.email mdInput type="email" placeholder="Email" class="form-control" id="email" name="email" autofocus="autofocus" required>
-        </md-form-field>
-    </div>
-    <div layout-gt-xs="row">
-        <md-form-field>
-            <input [(ngModel)]=authorisationData.password mdInput type="password" placeholder="Password" class="form-control" id="password" name="password" required>
-        </md-form-field>
-    </div>
-    <p></p>
-  <button md-raised-button type="submit" class="btn btn-default">Login</button>
-</form>
+    <h1 class="mat-display-1">Login</h1>
+    <form (ngSubmit)="login()">
+        <div layout-gt-xs="row">
+            <md-form-field>
+                <input [(ngModel)]=authorisationData.email mdInput type="email" placeholder="Email" class="form-control" id="email" name="email"
+                    autofocus="autofocus" required>
+            </md-form-field>
+        </div>
+        <div layout-gt-xs="row">
+            <md-form-field>
+                <input [(ngModel)]=authorisationData.password mdInput type="password" placeholder="Password" class="form-control" id="password"
+                    name="password" required>
+            </md-form-field>
+        </div>
+        <p></p>
+        <button md-raised-button type="submit" class="btn btn-default">Login</button>
+    </form>
 </md-card>

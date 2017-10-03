@@ -3,7 +3,7 @@
     <button routerLink="/todo/todoId/newTodo" md-mini-fab>
       <md-icon class="md-24">add</md-icon>
     </button>
-    </h1>
+  </h1>
   <div class="panel panel-primary">
     <div class="panel-body">
       <form>
@@ -15,25 +15,25 @@
         </div>
         <hr>
         <div class="row" *ngFor="let todo of todos" id="{{todo.id}}">
-            <!--<div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>-->
-              <div class="col-md-3 todo-title ">{{todo.title}}</div>
-              <div class="col-md-3 todo-text ">{{todo.text}}</div>
-              <div class="col-md-3">
-                <md-select placeholder="Ich" [(ngModel)]="todo.owner" name="{{todo.id}}">
-                  <md-option *ngFor="let contact of contactList" [value]="contact.userId" (click)="update()" >
-                    {{contact.name}}
-                  </md-option>
-                </md-select>
-              </div>
-              <div class="col-md-3">
-                <button [routerLink]="['/todo/todoId', todo.id]" md-mini-fab> 
+          <!--<div *ngIf="todos.indexOf(todo)" class="todo-separator"></div>-->
+          <div class="col-md-3 todo-title ">{{todo.title}}</div>
+          <div class="col-md-3 todo-text ">{{todo.text}}</div>
+          <div class="col-md-3">
+            <md-select placeholder="Ich" [(ngModel)]="todo.owner" name="{{todo.id}}">
+              <md-option *ngFor="let contact of contactList" [value]="contact.userId" (click)="update()">
+                {{contact.name}}
+              </md-option>
+            </md-select>
+          </div>
+          <div class="col-md-3">
+            <button [routerLink]="['/todo/todoId', todo.id]" md-mini-fab> 
                 <md-icon class="md-24">build</md-icon>
                 </button>
-                <button (click)="removeTodo(todo.id)" md-mini-fab> 
+            <button (click)="removeTodo(todo.id)" md-mini-fab> 
                 <md-icon class="md-24">delete</md-icon>
                 </button>
-              </div>
-        </div> 
+          </div>
+        </div>
       </form>
     </div>
   </div>

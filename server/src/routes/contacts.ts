@@ -96,7 +96,6 @@ router.delete('/contact/:contactId', (request: Request & JwtClaimSetHolder, resp
     }); 
 });
 
-
 //Kontakt erstellen
 router.post('/contact', (request: Request & JwtClaimSetHolder, response: Response, next: NextFunction) => {
 
@@ -110,7 +109,7 @@ if (request.jwtClaimSet != null && request.jwtClaimSet.userId != null){
 
 User.findOne({ email : request.body.email })
     .exec()
-    .then((contactUser: UserInterface ) => { //TODO: <[UserInterface, ContactInterface]>
+    .then((contactUser: UserInterface ) => { 
         if (!contactUser) {
             return Promise.reject('User gibts nicht mit dieser Email');
         }

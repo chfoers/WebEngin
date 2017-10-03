@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MdSnackBar } from '@angular/material';
+import { UserService } from './shared/services/user.service';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +8,8 @@ import { MdSnackBar } from '@angular/material';
 })
 
 export class AppComponent {
-  title = 'app';
-  
-
-  
+  constructor(public userService: UserService) { }
+  authenticated() {
+    return this.userService.isAuthenthicated();
+  }
 }

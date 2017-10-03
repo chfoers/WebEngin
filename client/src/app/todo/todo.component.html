@@ -1,20 +1,21 @@
 <md-card>
-<h1 *ngIf="todo.title == ''"  class="mat-display-1">Todo hinzufügen</h1>
-<h1 *ngIf="todo.title != ''"  class="mat-display-1">Todo</h1>
-<form>
-    <div layout-gt-xs="row">
-        <md-form-field>
-            <input [(ngModel)]=todo.title mdInput type="text" placeholder="Aufgabe" class="form-control" id="title" name="title" autofocus="autofocus" required>
-        </md-form-field>
-    </div>
-    <div layout-gt-xs="row">
-        <md-form-field>
-              <textarea [(ngModel)]=todo.text mdInput type="text" placeholder="Beschreibung" class="form-control" rows="5" id="text" name="text"></textarea>
-          </md-form-field>
-    </div>
-    <p></p>
-  <button *ngIf=isNew md-raised-button (click)="addTodo()" class="btn btn-default">Hinzufügen</button>
-  <button *ngIf=!isNew md-raised-button (click)="updateTodo()" class="btn btn-default">Speichern</button>
-  <button *ngIf=!isNew md-raised-button (click)="removeTodo()" class="btn btn-default">Löschen</button>
-</form>
+    <h1 *ngIf="todo.title == ''" class="mat-display-1">Todo hinzufügen</h1>
+    <h1 *ngIf="todo.title != ''" class="mat-display-1">Todo</h1>
+    <form>
+        <div layout-gt-xs="row">
+            <md-form-field>
+                <input [(ngModel)]=todo.title mdInput type="text" placeholder="Aufgabe" class="form-control" id="title" name="title" autofocus="autofocus"
+                    required>
+            </md-form-field>
+        </div>
+        <div layout-gt-xs="row">
+            <md-form-field>
+                <textarea [(ngModel)]=todo.text mdInput type="text" placeholder="Beschreibung" class="form-control" rows="5" id="text" name="text"></textarea>
+            </md-form-field>
+        </div>
+        <p></p>
+        <button *ngIf=isNew md-raised-button (click)="addTodo()" class="btn btn-default">Hinzufügen</button>
+        <button *ngIf=!isNew md-raised-button (click)="updateTodo()" class="btn btn-default">Speichern</button>
+        <button *ngIf=!isNew md-raised-button (click)="removeTodo()" class="btn btn-default">Löschen</button>
+    </form>
 </md-card>
