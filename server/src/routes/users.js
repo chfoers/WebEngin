@@ -2,18 +2,23 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const authorisationService_1 = require("../services/authorisationService");
+const validationService_1 = require("../services/validationService");
 const user_1 = require("../models/user");
 const router = express_1.Router();
 //Login
 router.post('/login', (request, response) => {
     const authorisationData = { email: request.body.email, password: request.body.password };
     const errors = [];
+    if (!validationService_1.default.hasRequiredFields(authorisationData, ['email', 'password'], errors)) {
+        response.status(400).json({ message: errors.join(' & ') });
+        return;
+    }
     user_1.User.findOne({ email: authorisationData.email })
         .select('userId name email password')
         .exec()
         .then((user) => {
         if (!user) {
-            return Promise.all([Promise.resolve(user), Promise.resolve(false)]);
+            return Promise.reject('User existiert nicht');
         }
         else {
             return Promise.all([Promise.resolve(user), authorisationService_1.AuthorisationService.checkPassword(authorisationData.password, user)]);
@@ -23,7 +28,7 @@ router.post('/login', (request, response) => {
             return authorisationService_1.AuthorisationService.setTokenForUser(response, user);
         }
         else {
-            return Promise.reject('Email oder Password ungültig');
+            return Promise.reject('Password ist falsch');
         }
     }).then(() => {
         response.sendStatus(201);

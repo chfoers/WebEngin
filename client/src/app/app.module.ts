@@ -15,7 +15,6 @@ import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModu
 import { MatGridListModule } from '@angular/material';
 import { MatSelectModule } from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
-import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';
 import { TodoListComponent } from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
@@ -26,7 +25,6 @@ import { ContactListComponent } from './contact-list/contact-list.component';
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    LogoutComponent,
     TodoComponent,
     TodoListComponent,
     ContactsComponent,
