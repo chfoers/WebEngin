@@ -34,6 +34,10 @@
     "@types/faker": "^4.1.1",
     "@types/jasmine": "^2.6.0",
     "faker": "^4.1.0",
-    "jasmine": "^2.8.0"
+    "jasmine": "^2.8.0",
+    "jasmine-core": "^2.8.0",
+    "karma": "^1.7.1",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-jasmine": "^1.1.0"
   }
 }
