@@ -1,17 +1,17 @@
 <md-card>
-        <button *ngIf=!authenticated() routerLink="/" md-button aria-label="Login">
+  <button *ngIf=!authenticated() routerLink="/" md-button aria-label="Login">
           Login
         </button>
-        <button *ngIf=!authenticated() routerLink="/registration" md-button aria-label="Registrieren">
+  <button *ngIf=!authenticated() routerLink="/registration" md-button aria-label="Registrieren">
           Registrieren
         </button>
-      <button *ngIf=authenticated() routerLink="/todo/index" md-button aria-label="Todos">
+  <button *ngIf=authenticated() routerLink="/todo/index" md-button aria-label="Todos">
         Todos
       </button>
-      <button *ngIf=authenticated() routerLink="contact/index" md-button aria-label="Kontakte">
+  <button *ngIf=authenticated() routerLink="contact/index" md-button aria-label="Kontakte">
         Kontakte
       </button>
-      <button *ngIf=authenticated() routerLink="/logout" md-button aria-label="Logout">
+  <button *ngIf=authenticated() routerLink="/logout" md-button aria-label="Logout">
         Logout
       </button>
 </md-card>

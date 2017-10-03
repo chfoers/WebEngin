@@ -5,23 +5,23 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';
-import { TodoListComponent} from './todo-list/todo-list.component';
+import { TodoListComponent } from './todo-list/todo-list.component';
 import { ContactsComponent } from './contacts/contacts.component';
 import { ContactListComponent } from './contact-list/contact-list.component';
 
 const routes = [
-      { path: '', component: LoginComponent },
-      { path: 'registration', component: RegistrationComponent },
-      { path: 'logout', component: LogoutComponent },
-      { path: 'todo/todoId/:todoId', component: TodoComponent },
-      { path: 'todo/index', component: TodoListComponent },
-      { path: 'contact/contactId/:contactId', component: ContactsComponent},
-      { path: 'contact/index', component: ContactListComponent},
+  { path: '', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'logout', component: LogoutComponent },
+  { path: 'todo/todoId/:todoId', component: TodoComponent },
+  { path: 'todo/index', component: TodoListComponent },
+  { path: 'contact/contactId/:contactId', component: ContactsComponent },
+  { path: 'contact/index', component: ContactListComponent },
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
 
 export class AppRoutingModule { }

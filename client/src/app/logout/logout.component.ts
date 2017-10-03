@@ -8,15 +8,18 @@ import { MdSnackBar } from '@angular/material';
   templateUrl: './logout.component.html',
   styleUrls: ['./logout.component.scss']
 })
-export class LogoutComponent{
-  constructor(private router: Router, private userService: UserService, public snackBar: MdSnackBar) {}
+export class LogoutComponent {
+  constructor(private router: Router, private userService: UserService, public snackBar: MdSnackBar) { }
 
+  // Methode zum Ausloggen des aktuellen Users, entfernt das jwtToken aus den Cookies
   logout() {
     this.userService.logout().subscribe(
       data => { this.router.navigateByUrl(''); },
-      error => { this.snackBar.open(error, 'Schließen', {
-        duration: 5000,
-      }); }
+      error => {
+        this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        });
+      }
     );
   }
 }

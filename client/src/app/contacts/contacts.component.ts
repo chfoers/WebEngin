@@ -9,13 +9,12 @@ import { MdSnackBar } from '@angular/material';
   styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
-  contact: Contact = { ownerId: '', contactId: '', name: '', email: ''};
+  // Einzelner Kontakt, der hinzugefügt werden soll
+  contact: Contact = { ownerId: '', contactId: '', name: '', email: '' };
+  // Handelt es sich bei dem Kontakt in contact um einen neuen Kontakt
   isNew = true;
 
-
-  constructor(private router: Router, private route: ActivatedRoute,  public contactService: ContactService, public snackBar: MdSnackBar) { 
-    
-  }
+  constructor(private router: Router, private route: ActivatedRoute, public contactService: ContactService, public snackBar: MdSnackBar) { }
 
   ngOnInit() {
     this.route.params.subscribe(
@@ -26,38 +25,47 @@ export class ContactsComponent implements OnInit {
     );
   }
 
+  // Methode zum Laden eines Kontakts anhand der contactId
   loadContact() {
-    if(this.contact.contactId != 'newContact'){
+    if (this.contact.contactId != 'newContact') {
       this.isNew = false;
       this.contactService.getContact(this.contact.contactId).subscribe(
-        answer => { 
+        answer => {
           this.contact.email = answer[0].email;
           this.contact.name = answer[0].name;
         },
-        error => { this.snackBar.open(error, 'Schließen', {
-          duration: 5000,
-        }); }
+        error => {
+          this.snackBar.open(error, 'Schließen', {
+            duration: 5000,
+          });
+        }
       );
     } else {
       this.isNew = true;
     }
   }
 
- addContact() {
+  // Methode zum Speichern eines neuen Kontakts
+  addContact() {
     this.contactService.addContact(this.contact.email).subscribe(
-      data => { this.router.navigateByUrl('contact/index');  },
-      error => { this.snackBar.open(error, 'Schließen', {
-        duration: 5000,
-      }); }
+      data => { this.router.navigateByUrl('contact/index'); },
+      error => {
+        this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        });
+      }
     );
   }
 
+  // Methode zum Löschen eines Kontakts
   removeContact() {
     this.contactService.removeContact(this.contact.contactId).subscribe(
       data => { this.router.navigateByUrl('contact/index'); },
-      error => { this.snackBar.open(error, 'Schließen', {
-        duration: 5000,
-      }); }
+      error => {
+        this.snackBar.open(error, 'Schließen', {
+          duration: 5000,
+        });
+      }
     );
   }
 }

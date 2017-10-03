@@ -14,9 +14,11 @@ export { User } from '../models/user.model';
 
 @Injectable()
 export class UserService {
-    private baseURL = 'http://' + window.location.hostname + ':8080';
-    private options: RequestOptions;
-  
+  // URL zum Aufrufen des Servers
+  private baseURL = 'http://' + window.location.hostname + ':8080';
+  // Options in Form eines RequestOptions-Objekts
+  private options: RequestOptions;
+
   constructor(private http: Http) {
     this.options = new RequestOptions({
       headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -24,35 +26,41 @@ export class UserService {
     });
   }
 
+  // Prüft, ob ein User angemeldet ist, verwendet dafür das jwtToken
   isAuthenthicated() {
-    if (Cookie.get('jwtToken') == ''){
+    if (Cookie.get('jwtToken') == '') {
       return false;
     } else {
       return true;
     }
   }
 
+  // Methode zum Einloggen eines Users, fügt ein jwtToken bei den Cookies hinzu
   login(authorisationData: AuthorisationData) {
     return this.http.post(this.baseURL + '/users/login', authorisationData, this.options)
       .catch(this.handleError);
   }
 
+  // Methode zum Ausloggen des aktuellen Users, entfernt das jwtToken aus den Cookies
   logout() {
     return this.http.delete(this.baseURL + '/users/logout', this.options)
       .catch(this.handleError);
   }
 
+  // Methode zum registrieren eines Users
   registration(user: User) {
     return this.http.post(this.baseURL + '/users/registration', user, this.options)
-    .catch(this.handleError);
+      .catch(this.handleError);
   }
 
-  getMe(){
+  // Methode gibt das aktuelle jwtClaimSet des Users zurück
+  getMe() {
     return this.http.get(this.baseURL + '/users/getMe/', this.options)
-      .map((response: Response) => response.json().data )
-    .catch(this.handleError);
+      .map((response: Response) => response.json().data)
+      .catch(this.handleError);
   }
 
+  // Methode zum Error-Handling
   private handleError(error: Response | any) {
     return Observable.throw(error.json().message)
   }

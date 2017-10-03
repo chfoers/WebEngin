@@ -1,21 +1,19 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
-import { HttpModule } from '@angular/http';                 
-import { CommonModule }                             from '@angular/common';
-import { FormsModule, ReactiveFormsModule }         from '@angular/forms';
-
+import { HttpModule } from '@angular/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
-
 import { UserService } from './shared/services/user.service';
 import { User_TodoService } from './shared/services/user_todo.service';
 import { TodoService } from './shared/services/todo.service';
-import { ContactService} from './shared/services/contact.service';
+import { ContactService } from './shared/services/contact.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MdButtonModule, MdCardModule, MdMenuModule, MdToolbarModule, MdIconModule, MdInputModule, MdTextareaAutosize, MdSnackBarModule } from '@angular/material';
-import { MatGridListModule} from '@angular/material';
-import { MatSelectModule} from '@angular/material';
+import { MatGridListModule } from '@angular/material';
+import { MatSelectModule } from '@angular/material';
 import { RegistrationComponent } from './registration/registration.component';
 import { LogoutComponent } from './logout/logout.component';
 import { TodoComponent } from './todo/todo.component';

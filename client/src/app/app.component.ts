@@ -6,6 +6,7 @@ import { UserService } from './shared/services/user.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
+
 export class AppComponent {
   constructor(public userService: UserService) { }
   authenticated() {
