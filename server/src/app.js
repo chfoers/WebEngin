@@ -13,6 +13,25 @@ const config_1 = require("./config");
 const authorisationService_1 = require("./services/authorisationService");
 const http = require("http");
 const WebSocket = require("ws");
+/**
+import { Builder, By, until, Browser, promise } from 'selenium-webdriver';
+(promise as any).USE_PROMISE_MANAGER = false;
+
+
+
+async function LoginTest() {
+  const driver = await new Builder().forBrowser(Browser.CHROME).build();
+  await driver.get('http://localhost:8080/users/login');
+  await driver.findElement(By.name('email')).sendKeys('max.mustermann@gmail.com');
+  await driver.findElement(By.name('password')).sendKeys('supsersecret');
+  await driver.findElement(By.css('.btn.btn-default')).click();
+  await driver.wait(until.elementLocated(By.className('alert')), 1000);
+
+  await driver.quit();
+}
+
+LoginTest();
+*/
 function startServer() {
     const app = express();
     app.use(express.static('public'));

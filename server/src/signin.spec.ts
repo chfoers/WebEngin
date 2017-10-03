@@ -1,3 +1,4 @@
+/** 
 import { Builder, By, until, promise, Browser, WebDriver } from 'selenium-webdriver';
 import * as fs from 'fs';
 
@@ -32,3 +33,4 @@ describe('login', () => {
     })();
   })
 });
+*/
