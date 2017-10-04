@@ -49,9 +49,7 @@ function startServer() {
     wss.on('connection', (webSocket) => {
         webSocket.on('message', (message) => {
             wss.clients.forEach((ws) => {
-                console.log(message);
                 ws.send(message);
-                //if (ws !== webSocket) { ws.send(message); }
             });
         });
     });

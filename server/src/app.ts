@@ -51,10 +51,10 @@ function startServer() {
         webSocket.on('message', (message: string) => {
             wss.clients.forEach((ws: WebSocket) => {
                 ws.send(message); 
-                //if (ws !== webSocket) { ws.send(message); }
             })
         });
     });
+
 
     app.listen(8080, () => {
 	    console.log('listening on port 8080!');
