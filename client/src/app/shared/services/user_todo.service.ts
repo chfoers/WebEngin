@@ -59,7 +59,7 @@ export class User_TodoService implements OnInit {
         // Laden des Usernamens und des Kontaktes
         this.userService.getMe().subscribe(
             data => {
-            this.me = data;
+                this.me = data;
 
                 const contact = this.contactService.getContact(user_todo.userId).map(response => response[0]);
                 const todoTitle = this.todoService.getTodo(user_todo.todoId).map(response => response);
@@ -67,23 +67,23 @@ export class User_TodoService implements OnInit {
 
                 // Senden der auszugebenen Nachricht an den Websocket
                 Observable.forkJoin([contact, todoTitle, contactUserId]).subscribe(results => {
-                    let senden = "Du hast ";
-                    let empfangen = "Du hast ";
+                    let senden = 'Du hast ';
+                    let empfangen = 'Du hast ';
 
                     if (results[1] !== undefined) {
-                        senden = senden + "'" + results[1].title + "'";
-                        empfangen = empfangen + "'" + results[1].title + "'";
+                        senden = senden + '\'' + results[1].title + '\'';
+                        empfangen = empfangen + '\'' + results[1].title + '\'';
                     } else {
-                        senden = senden + " ein Todo"
-                        empfangen = empfangen + " ein Todo"
+                        senden = senden + ' ein Todo';
+                        empfangen = empfangen + ' ein Todo';
                     }
 
                     if (results[0] !== undefined) {
                         senden = senden + ' an ' + results[0].name + ' versendet.';
                         empfangen = empfangen + ' von ' + this.me.name + ' empfangen.';
                     } else {
-                        senden = senden + " versendet."
-                        empfangen = empfangen + " empfangen."
+                        senden = senden + ' versendet.';
+                        empfangen = empfangen + ' empfangen.';
                     }
 
                     this.socket.next(results[2] + empfangen);
