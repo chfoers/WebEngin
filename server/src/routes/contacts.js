@@ -128,7 +128,7 @@ router.post('/contact', (request, response, next) => {
             return Promise.reject('Kontakt existiert schon');
         }
         if (userId == contactUser.userId) {
-            return Promise.reject('Man kann sich nicht selbst als Kontakt hinzügen');
+            return Promise.reject('Man kann sich nicht selbst als Kontakt hinzufügen');
         }
         var contact2 = new contact_1.Contact({
             ownerId: contactUser.userId,

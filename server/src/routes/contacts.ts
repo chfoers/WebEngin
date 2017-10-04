@@ -145,7 +145,7 @@ router.post('/contact', (request: Request & JwtClaimSetHolder, response: Respons
                 return Promise.reject('Kontakt existiert schon');
             }
             if (userId == contactUser.userId) {
-                return Promise.reject('Man kann sich nicht selbst als Kontakt hinzügen')
+                return Promise.reject('Man kann sich nicht selbst als Kontakt hinzufügen')
             }
 
             var contact2 = new Contact({
