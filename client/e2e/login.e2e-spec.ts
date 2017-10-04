@@ -8,7 +8,7 @@ describe('login', () => {
         await element(by.id('password')).sendKeys('geheim');
         await element(by.css('.btn.btn-default')).click();
         // kein explizites Warten erforderlich
-        let alertText = await element(by.css('.alert-danger')).getText();
+        const alertText = await element(by.css('.alert-danger')).getText();
         expect(alertText).toContain('Invalid');
     });
 });

@@ -15,7 +15,6 @@ export class AppComponent implements OnInit {
   private socket: Subject<any>;
   private message: string;
   private messageToServer: string;
-  //webSocket = new WebSocket('ws://localhost:8081');
 
   constructor(private router: Router, private userService: UserService,
     public snackBar: MdSnackBar, websocketService: WebsocketService) {
@@ -25,20 +24,18 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.socket.subscribe(
       message => {
-        this.message = message.data
+        this.message = message.data;
         this.snackBar.open(this.message, 'Schließen',  {
-          duration: 2000,
+          duration: 10000,
         });
       }
     );
   }
 
-
   // Methode die Anhand des jwtTokens prüft, ob ein User eingeloggt ist
   authenticated() {
     return this.userService.isAuthenthicated();
   }
-
 
   // Methode zum Ausloggen des aktuellen Users, entfernt das jwtToken aus den Cookies
   logout() {
@@ -51,18 +48,4 @@ export class AppComponent implements OnInit {
       }
     );
   }
-
-  sendMessage() {
-    this.socket.next(this.messageToServer);
-  }
-  
-/*
-  socket.onmessage = function(event) {
-    this.snackBar.open(event.data, {
-          duration: 2000,
-    });
-  };
-
-*/
-
 }

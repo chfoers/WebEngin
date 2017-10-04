@@ -50,7 +50,6 @@ function startServer() {
     wss.on('connection', (webSocket: WebSocket) => {
         webSocket.on('message', (message: string) => {
             wss.clients.forEach((ws: WebSocket) => {
-                console.log(message);
                 ws.send(message); 
                 //if (ws !== webSocket) { ws.send(message); }
             })

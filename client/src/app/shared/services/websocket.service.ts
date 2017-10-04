@@ -3,10 +3,10 @@ import { Subject, Observer, Observable } from 'rxjs/Rx';
 
 @Injectable()
 
-export class WebsocketService{
+export class WebsocketService {
   public createWebsocket(): Subject<MessageEvent> {
-        let socket = new WebSocket('ws://localhost:8081');
-        let observable = Observable.create(
+        const socket = new WebSocket ('ws://localhost:8081');
+        const observable = Observable.create(
                     (observer: Observer<MessageEvent>) => {
                         socket.onmessage = observer.next.bind(observer);
                         socket.onerror = observer.error.bind(observer);
@@ -14,7 +14,7 @@ export class WebsocketService{
                         return socket.close.bind(socket);
                     }
         );
-        let observer = {
+        const observer = {
                 next: (data: Object) => {
                     if (socket.readyState === WebSocket.OPEN) {
                         socket.send(JSON.stringify(data));
