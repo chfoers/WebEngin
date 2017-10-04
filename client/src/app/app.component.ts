@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { UserService,User } from './shared/services/user.service';
+import { UserService, User } from './shared/services/user.service';
 import { MdSnackBar } from '@angular/material';
 import { WebsocketService } from './shared/services/websocket.service';
 import { Subject, Observable, Subscription } from 'rxjs/Rx';
@@ -28,23 +28,24 @@ export class AppComponent implements OnInit {
       message => {
         this.message = message.data;
         this.message = this.message.substring(1);
-        this.message = this.message.substring(0,this.message.length-1);
-        this.uuid = this.message.substring(0,36);
-        this.message = this.message.substring(36,this.message.length);
+        this.message = this.message.substring(0, this.message.length - 1);
+        this.uuid = this.message.substring(0, 36);
+        this.message = this.message.substring(36, this.message.length);
         this.userService.getMe().subscribe(
-          data => { this.me = data; 
-                      if (this.me.userId == this.uuid){
-                        this.snackBar.open(this.message, 'Schließen',  {
-                          duration: 10000,
-                        });
-                      }
-                  },
+          data => {
+          this.me = data;
+            if (this.me.userId === this.uuid) {
+              this.snackBar.open(this.message, 'Schließen', {
+                duration: 10000,
+              });
+            }
+          },
           error => {
             this.snackBar.open(error, 'Schließen', {
               duration: 5000,
             });
           }
-        );     
+        );
       }
     );
   }
