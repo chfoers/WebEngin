@@ -35,13 +35,15 @@ export class User_TodoService {
             .map((response: Response) => response.json().data)
             .catch(this.handleError);
 
-        // Laden des Usernamens und des Kontaktes
-        const contactName = this.contactService.getContact(user_todo.userId).map(response => response[0].name);
-        const todoTitle = this.todoService.getTodo(user_todo.todoId).map(response => response.title);
 
+
+
+        // Laden der userID 
+        const contactUserId = this.contactService.getContact(user_todo.userId).map(response => response[0].userId);
+       
         // Senden der auszugebenen Nachricht an den Websocket
-        Observable.forkJoin([contactName, todoTitle]).subscribe(results => {
-            this.socket.next('Der User ' + results[0] + ' hat das Todo ' + results[1] + ' erhalten');
+        Observable.forkJoin([contactUserId]).subscribe(results => {
+            this.socket.next(results[0] + ' Ein neus Todo wurde hinzugefügt.');
         });
         return answer;
     }
