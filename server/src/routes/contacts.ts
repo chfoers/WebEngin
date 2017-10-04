@@ -166,5 +166,4 @@ router.post('/contact', (request: Request & JwtClaimSetHolder, response: Respons
         });
 });
 
-
 export default router;

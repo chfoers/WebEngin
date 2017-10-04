@@ -27,10 +27,10 @@ export class AppComponent implements OnInit {
     this.socket.subscribe(
       message => {
         this.message = message.data;
-        this.message = this.message.substring(1)
-        this.message = this.message.substring(0,this.message.length-1)
-        this.uuid = this.message.substring(0,36)
-        this.message = this.message.substring(36,this.message.length)
+        this.message = this.message.substring(1);
+        this.message = this.message.substring(0,this.message.length-1);
+        this.uuid = this.message.substring(0,36);
+        this.message = this.message.substring(36,this.message.length);
         this.userService.getMe().subscribe(
           data => { this.me = data; 
                       if (this.me.userId == this.uuid){
@@ -44,9 +44,7 @@ export class AppComponent implements OnInit {
               duration: 5000,
             });
           }
-        );
-        
-        
+        );     
       }
     );
   }

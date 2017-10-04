@@ -35,9 +35,6 @@ export class User_TodoService {
             .map((response: Response) => response.json().data)
             .catch(this.handleError);
 
-
-
-
         // Laden der userID 
         const contactUserId = this.contactService.getContact(user_todo.userId).map(response => response[0].userId);
        
